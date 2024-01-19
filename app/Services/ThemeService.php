@@ -2,44 +2,66 @@
 
 namespace App\Services;
 
+use App\Models\Theme;
+use App\Models\Module;
+use App\Services\SubThemeService;
+use Illuminate\Support\Facades\DB;
+
 /**
  * Class ThemeService.
  */
 class ThemeService
 {
-    public function index()
-    {
-        //
-    }
+	private Theme $theme;
+	private Module $module;
+	private SubThemeService $subThemeService;
 
-    public function create()
-    {
-        //
-    }
+	public function __construct(Theme $theme, Module $module, SubThemeService $subThemeService)
+	{
+		$this->theme = $theme;
+		$this->module = $module;
+		$this->subThemeService = $subThemeService;
+	}
 
-    public function show()
-    {
-        //
-    }
+	public function show(int $id): array
+	{
+		return [$this->module::where('id', $id)->with('themes.subThemes')->get()];
+	}
 
-    public function post()
-    {
-        //
-    }
+	public function storeTheme(array $moduleData, int $module_id): array
+	{
+		return DB::transaction(function () use ($moduleData, $module_id) {
+			foreach ($moduleData['themes'] as $themeData) {
 
-    public function edit()
-    {
-        //
-    }
+				$this->theme = Theme::create($themeData);
 
-    public function update()
-    {
-        //
-    }
+				$this->module->themes()->attach([['themes_id' => $this->theme['id'], 'modules_id' => $module_id, 'created_by' => $themeData['created_by'], 'updated_by' => $themeData['updated_by']]]);
 
-    public function destroy()
-    {
-        //
-    }
+				$this->subThemeService->storeSubTheme($themeData, $this->theme['id']);
+			}
+
+			return [$this->show($module_id)];
+		});
+	}
+
+	public function post()
+	{
+		//
+	}
+
+	public function edit()
+	{
+		//
+	}
+
+	public function update()
+	{
+		//
+	}
+
+	public function destroy()
+	{
+		//
+	}
 
 }

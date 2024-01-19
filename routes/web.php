@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\GroupController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,12 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',
-    function (): \Illuminate\Http\JsonResponse
-    {
-        return response()->json([
-            'model' => 'Module',
-            'data' => \App\Models\Module::where('id', 1)->with('instructor', 'themes.subThemes')->get(),
-        ]);
-    }
-);
+
+Route::apiResource('info',GroupController::class);
+
+

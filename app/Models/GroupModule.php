@@ -15,8 +15,6 @@ class GroupModule extends Model
     protected $table = 'group_modules';
     protected $fillable = [
         'group_id',
-        'modules_id',
-        'created_by',
-        'updated_by',
+        'modules_id'
     ];
 }

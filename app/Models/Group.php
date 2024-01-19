@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @method static create(string[] $array)
+ * @method static where(string $string, int $int)
+ * @property mixed $modules
  */
 class Group extends Model
 {
@@ -23,11 +25,17 @@ class Group extends Model
 
     public function academicActivity(): BelongsTo
     {
-        return $this->belongsTo(AcademicActivity::class, 'academic_activity_id');
+        return $this->belongsTo(
+            AcademicActivity::class,
+            'academic_activity_id');
     }
 
     public function modules(): BelongsToMany
     {
-        return $this->BelongsToMany(Module::class, 'group_modules', 'groups_id', 'modules_id');
+        return $this->BelongsToMany(
+            Module::class,
+            'group_modules',
+            'group_id',
+            'modules_id');
     }
 }

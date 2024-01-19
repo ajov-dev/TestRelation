@@ -2,39 +2,51 @@
 
 namespace App\Services;
 
+use App\Models\SubTheme;
+use App\Models\Theme;
+use Exception;
+use Illuminate\Support\Facades\DB;
+
 /**
  * Class SubThemeService.
  */
 class SubThemeService
 {
-    public function index()
+    private $subTheme;
+
+    public function __construct(SubTheme $subTheme)
     {
-        //
+        $this->subTheme = $subTheme;
+
     }
 
-    public function create()
+    public function index(): array
     {
-        //
+        return [
+            'subThemes' => $this->subTheme::all(),
+        ];
     }
 
-    public function show()
+    public function storeSubTheme(array $arraySubTheme, int $themeID): array
     {
-        //
+        return DB::transaction(function () use ($arraySubTheme, $themeID) {
+            foreach ($arraySubTheme['subThemes'] as $subThemeData) {
+
+                $subThemeData['themes_id'] = $themeID;
+
+                Subtheme::create($subThemeData);
+            }
+
+            return [
+                'subThemes' => Theme::where('id', $themeID)->with('subThemes')->get()
+            ];
+        });
+
     }
 
-    public function post()
+    public function update(int $id)
     {
-        //
-    }
 
-    public function edit()
-    {
-        //
-    }
-
-    public function update()
-    {
-        //
     }
 
     public function destroy()

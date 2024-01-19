@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static create(string[] $array)
+ * @method static attach(mixed $themeData)
  */
 class Theme extends Model
 {
