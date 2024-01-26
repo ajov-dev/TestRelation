@@ -23,7 +23,7 @@ class Module extends Model
 
     public function groups(): BelongsToMany
     {
-        return $this->BelongsToMany(Group::class, 'group_modules', 'modules_id', 'groups_id');
+        return $this->BelongsToMany(Group::class, 'group_modules', 'modules_id', 'group_id');
     }
 
     public function instructor(): BelongsToMany
