@@ -3,10 +3,7 @@
 namespace App\Services;
 
 use App\Models\Group;
-use App\Models\Module;
-use App\Models\Theme;
-use App\Models\SubTheme;
-use Exception as ExceptionAlias;
+use App\Services\ModuleService;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -14,50 +11,45 @@ use Illuminate\Support\Facades\DB;
  */
 class GroupService
 {
-	private Group $group;
-	private Module $module;
-	private Theme $theme;
 
-	private ThemeService $ThemeService;
+	public const create_by = 'admin';
+	public const update_by = 'admin';
 
-	public function __construct(Group $group, Module $module, Theme $theme, ThemeService $ThemeService)
+	protected $group;
+	protected $ModuleService;
+
+	public function __construct(Group $group, ModuleService $ModuleService)
 	{
 		$this->group = $group;
-		$this->module = $module;
-		$this->theme = $theme;
-		$this->ThemeService = $ThemeService;
+
+		$this->ModuleService = $ModuleService;
 	}
 
-	public function index(): array
+	public function index()
 	{
 		return [
-			'grupos' => Group::with(['modules.themes.subThemes'])->get()
+			'grupos' => Group::latest()->with([
+				'modules' => function ($query) {
+					$query->with(['instructor', 'themes.sub_themes']);
+				}
+			])->get()
 		];
 	}
 
-	public function store(array $request): array
+	public function store(array $request)
 	{
 		$this->group = Group::create($request);
 		return $this->group->toArray();
 	}
 
-	public function storeGroup(array $data): array
+	public function storeGroup($data)
 	{
-		return DB::transaction(function () use ($data) {
-			$this->store($data);
+		$group = Group::find(1);
+		foreach ($data['units'] as $ModuleData) {
+			$ModuleData['group_id'] = $group->id;
+			$this->ModuleService->storeModule($ModuleData);
+		}
 
-			foreach ($data['units'] as $moduleData) {
-
-				$this->module = Module::create($moduleData);
-
-				$this->module->instructor()->attach([['instructor_id' => $moduleData['instructor_id'], 'modules_id' => $this->module['id'], 'created_by' => $this->group['created_by'], 'updated_by' => $this->group['updated_by']]]);
-
-				$this->group->modules()->attach([['modules_id' => $this->module['id'], 'group_id' => $this->group['id'], 'created_by' => $this->group['created_by'], 'updated_by' => $this->group['updated_by']]]);
-
-				$this->ThemeService->storeTheme($moduleData, $this->module['id']);
-			}
-
-			return [$this->index()];
-		});
+		return $group;
 	}
 }

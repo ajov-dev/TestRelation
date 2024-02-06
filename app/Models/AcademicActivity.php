@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class AcademicActivity extends Model
 {
     use HasFactory;
+
+	protected $table = 'academic_activities';
     protected $fillable = [
         'description',
         'created_by',

@@ -13,10 +13,10 @@ return new class extends Migration {
         Schema::create('modules_instructor', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('created_by');
-            $table->string('updated_by');
-            $table->foreignId('modules_id')->constrained('modules');
-            $table->foreignId('instructor_id')->constrained('instructors');
+			$table->string('created_by')->nullable();
+			$table->string('updated_by')->nullable();
+			$table->foreignId('group_module_id')->constrained('group_modules');
+			$table->foreignId('instructor_id')->constrained('instructors');
         });
     }
 
@@ -28,3 +28,4 @@ return new class extends Migration {
         Schema::dropIfExists('modules_instructor');
     }
 };
+// 

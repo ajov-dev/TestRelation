@@ -14,25 +14,29 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Theme extends Model
 {
-    use HasFactory;
+	use HasFactory;
+	protected $table = 'themes';
+	protected $fillable = [
+		'description',
+		'created_by',
+		'updated_by',
+	];
 
-    protected $table = 'themes';
-    protected $fillable = [
-        'description',
-        'created_by',
-        'updated_by',
-    ];
+	protected $hidden = [
+		'created_by',
+		'updated_by',
+		'created_at',
+		'updated_at',
+		'pivot'
+	];
 
-    public function modules(): BelongsToMany
-    {
-        return $this->BelongsToMany(Module::class, 'modules_themes', 'themes_id', 'modules_id');
-    }
+	public function modules(): BelongsToMany
+	{
+		return $this->belongsToMany(Module::class, 'modules_themes', 'themes_id', 'modules_id');
+	}
 
-    public function subThemes(): HasMany {
-        return $this->HasMany(Theme::class, 'themes_id');
-    }
-
-    public function parentTheme(): BelongsTo {
-        return $this->BelongsTo(Theme::class, 'themes_id');
-    }
+	public function sub_themes(): HasMany
+	{
+		return $this->hasMany(SubTheme::class, 'theme_id');
+	}
 }

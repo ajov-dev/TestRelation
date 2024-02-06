@@ -32,7 +32,7 @@ class SubThemeService
         return DB::transaction(function () use ($arraySubTheme, $themeID) {
             foreach ($arraySubTheme['subThemes'] as $subThemeData) {
 
-                $subThemeData['themes_id'] = $themeID;
+                $subThemeData['theme_id'] = $themeID;
 
                 Subtheme::create($subThemeData);
             }

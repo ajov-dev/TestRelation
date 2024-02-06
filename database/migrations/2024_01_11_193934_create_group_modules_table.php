@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('group_modules', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->foreignId('group_id')->constrained('groups');
             $table->foreignId('modules_id')->constrained('modules');
         });

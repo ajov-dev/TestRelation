@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('firstname', 50);
             $table->string('lastname', 50);
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
 
         });
     }

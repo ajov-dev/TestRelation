@@ -10,11 +10,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GroupModule extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'group_modules';
-    protected $fillable = [
-        'group_id',
-        'modules_id'
-    ];
+	protected $table = 'group_modules';
+	protected $fillable = [
+		'group_id',
+		'modules_id',
+		'created_by',
+		'updated_by'
+	];
+	protected $hidden = [
+		'pivot',
+		'created_at',
+		'updated_at',
+		'created_by',
+		'updated_by',
+	];
 }

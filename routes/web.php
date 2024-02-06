@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\SubThemeController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +19,6 @@ use App\Http\Controllers\GroupController;
 */
 
 
-Route::apiResource('info',GroupController::class);
+
 
 

@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\SubThemeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +18,10 @@ use App\Http\Controllers\GroupController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::apiResource('groups',GroupController::class);
+
+Route::apiResource('modules', ModuleController::class);
+
+route::apiResource('themes', ThemeController::class);
+
+route::apiResource('subthemes', SubThemeController::class);

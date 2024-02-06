@@ -11,17 +11,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Instructor extends Model
 {
-    use HasFactory;
+	use HasFactory;
+	protected $table = 'instructors';
+	protected $fillable = [
+		'firstname',
+		'lastname',
+	];
 
-    protected $fillable = [
-        'firstname',
-        'lastname',
-        'created_by',
-        'updated_by',
-    ];
+	protected $hidden = [
+		'pivot',
+		'created_at',
+		'updated_at',
+		'created_by',
+		'updated_by',
+	];
 
-    public function modules(): BelongsToMany
-    {
-        return $this->belongsToMany(Module::class, 'modules_instructor', 'instructor_id', 'modules_id');
-    }
+	public function modules()
+	{
+		return $this->belongsToMany(GroupModule::class, 'modules_instructor', 'instructor_id', 'group_module_id');
+	}
 }

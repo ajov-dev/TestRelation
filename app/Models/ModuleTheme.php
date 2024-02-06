@@ -10,12 +10,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ModuleTheme extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'modules_themes';
-    protected $fillable = [
-        'modules_id',
-        'themes_id'
-    ];
-
+	protected $table = 'modules_themes';
+	protected $fillable = [
+		'modules_id',
+		'themes_id',
+		'created_by',
+		'updated_by',
+	];
+	protected $hidden = [
+		'pivot',
+		'created_at',
+		'updated_at',
+		'created_by',
+		'updated_by',
+	];
 }

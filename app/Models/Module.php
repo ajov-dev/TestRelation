@@ -13,27 +13,34 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Module extends Model
 {
-    use HasFactory;
+	protected $table = 'modules';
+	protected $fillable = [
+		'description',
+		'created_by',
+		'updated_by',
+	];
 
-    protected $fillable = [
-        'description',
-        'created_by',
-        'updated_by',
-    ];
+	protected $hidden = [
+		'pivot',
+		'created_at',
+		'updated_at',
+		'created_by',
+		'updated_by',
+	];
+	use HasFactory;
 
-    public function groups(): BelongsToMany
-    {
-        return $this->BelongsToMany(Group::class, 'group_modules', 'modules_id', 'group_id');
-    }
+	public function groups(): BelongsToMany
+	{
+		return $this->belongsToMany(Group::class, 'group_modules', 'group_id', 'modules_id');
+	}
 
-    public function instructor(): BelongsToMany
-    {
-        return $this->BelongsToMany(Instructor::class, 'modules_instructor', 'modules_id', 'instructor_id');
-    }
+	public function instructor()
+	{
+		return $this->belongsToMany(Instructor::class, 'modules_instructor', 'group_module_id', 'instructor_id');
+	}
 
-    public function themes(): BelongsToMany
-    {
-        return $this->belongsToMany(Theme::class, 'modules_themes', 'modules_id', 'themes_id');
-    }
-
+	public function themes()
+	{
+		return $this->belongsToMany(Theme::class, 'modules_themes', 'modules_id', 'themes_id');
+	}
 }

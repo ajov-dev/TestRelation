@@ -35,7 +35,7 @@ class ThemeService
 
 				$this->theme = Theme::create($themeData);
 
-				$this->module->themes()->attach([['themes_id' => $this->theme['id'], 'modules_id' => $module_id, 'created_by' => $themeData['created_by'], 'updated_by' => $themeData['updated_by']]]);
+				$this->module->themes()->attach([['theme_id' => $this->theme['id'], 'modules_id' => $module_id, 'created_by' => $themeData['created_by'], 'updated_by' => $themeData['updated_by']]]);
 
 				$this->subThemeService->storeSubTheme($themeData, $this->theme['id']);
 			}

@@ -14,28 +14,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Group extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $fillable = [
-        'academic_activity_id',
-        'description',
-        'created_by',
-        'updated_by',
-    ];
+	protected $table = 'groups';
+	protected $fillable = [
+		'academic_activity_id',
+		'description',
+	];
 
-    public function academicActivity(): BelongsTo
-    {
-        return $this->belongsTo(
-            AcademicActivity::class,
-            'academic_activity_id');
-    }
+	protected $hidden = [
+		'pivot',
+		'created_at',
+		'updated_at',
+		'created_by',
+		'updated_by',
+	];
 
-    public function modules(): BelongsToMany
-    {
-        return $this->BelongsToMany(
-            Module::class,
-            'group_modules',
-            'group_id',
-            'modules_id');
-    }
+	public function academicActivity(): BelongsTo
+	{
+		return $this->belongsTo(
+			AcademicActivity::class
+		);
+	}
+
+	public function modules(): BelongsToMany
+	{
+		return $this->belongsToMany(Module::class, 'group_modules', 'modules_id', 'group_id');
+	}
 }
