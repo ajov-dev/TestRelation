@@ -16,16 +16,16 @@ use Illuminate\Support\Facades\DB;
 class ModuleService
 {
 	// constructor
-	protected $GroupModule;
+	protected $GM;
 	protected $Module;
 	protected $ModuleInstructor;
 	protected $ModuleTheme;
 	protected $SubTheme;
 	protected $Theme;
 
-	public function __construct(Module $Module, GroupModule $GroupModule, ModuleInstructor $ModuleInstructor, Theme $Theme, SubTheme $SubTheme, ModuleTheme $ModuleTheme)
+	public function __construct(Module $Module, GroupModule $GM, ModuleInstructor $ModuleInstructor, Theme $Theme, SubTheme $SubTheme, ModuleTheme $ModuleTheme)
 	{
-		$this->GroupModule = $GroupModule;
+		$this->GM = $GM;
 		$this->Module = $Module;
 		$this->ModuleInstructor = $ModuleInstructor;
 		$this->ModuleTheme = $ModuleTheme;
@@ -39,44 +39,45 @@ class ModuleService
 		];
 	}
 
-	public function updateOrCreateModule(array $DataModule)
+	public function updateOrCreateModule(array $DM)
 	{
-		return DB::transaction(function () use ($DataModule) {
-			$DataModule['created_by'] = 'admin';
-			$DataModule['updated_by'] = 'admin';
+		return DB::transaction(function () use ($DM) {
+			$DM['created_by'] = 'admin';
+			$DM['updated_by'] = 'admin';
 
-			$this->module = isset($DataModule['id'])
-			? Module::updateOrCreate(['id' => $DataModule['id']], $DataModule)
-			: Module::create($DataModule);
+			$this->Module = isset($DM['id'])
+				? Module::updateOrCreate(['id' => $DM['id']], $DM)
+				: Module::create($DM);
 
-			$GroupModule = GroupModule::updateOrCreate(['group_id' => $DataModule['group_id'], 'modules_id' => $DataModule['id']], $DataModule);
+			$this->GM = GroupModule::updateOrCreate(['group_id' => $DM['group_id'], 'modules_id' => $DM['id']], $DM);
 
-			ModuleInstructor::updateOrCreate(['group_module_id' => $GroupModule['id']], ['instructor_id' => $DataModule['instructor_id']]);
+			ModuleInstructor::updateOrCreate(['group_module_id' => $this->GM['id']], ['instructor_id' => $DM['instructor_id']]);
 
-			if (isset($DataModule['themes'])) {
-				foreach ($DataModule['themes'] as $DataThemes) {
-					$DataThemes['created_by'] = $DataModule['created_by'];
-					$DataThemes['updated_by'] = $DataModule['updated_by'];
+			if (isset($DM['themes'])) {
+				foreach ($DM['themes'] as $DT) {
+					$DT['created_by'] = $DM['created_by'];
+					$DT['updated_by'] = $DM['updated_by'];
 
-					$this->Theme = isset($DataThemes['id'])
-					? Theme::updateOrCreate(['id' => $DataThemes['id']], $DataThemes)
-					: Theme::create($DataThemes);
+					$this->Theme = isset($DT['id'])
+						? Theme::updateOrCreate(['id' => $DT['id']], $DT)
+						: Theme::create($DT);
 
-					$DataThemes['modules_id'] = $DataModule['id'];
-					$DataThemes['themes_id'] = $this->Theme['id'];
+					$DT['modules_id'] = $DM['id'];
+					$DT['themes_id'] = $this->Theme['id'];
+
 					ModuleTheme::updateOrCreate([
-						'modules_id' => $DataModule['id'],
-						'themes_id' => $DataThemes['themes_id']
-					], $DataThemes);
+						'modules_id' => $DM['id'],
+						'themes_id' => $this->Theme['id']
+					], $DT);
 
-					foreach ($DataThemes['sub_themes'] as $DataSubThemes) {
-						$DataSubThemes['theme_id'] = $this->Theme['id'];
-						$DataSubThemes['created_by'] = $DataModule['created_by'];
-						$DataSubThemes['updated_by'] = $DataModule['updated_by'];
+					foreach ($DT['sub_themes'] as $DST) {
+						$DST['theme_id'] = $this->Theme['id'];
+						$DST['created_by'] = $DM['created_by'];
+						$DST['updated_by'] = $DM['updated_by'];
 
-						$this->SubTheme = isset($DataSubThemes['id'])
-						? SubTheme::updateOrCreate(['id' => $DataSubThemes['id']], $DataSubThemes)
-						: SubTheme::create($DataSubThemes);
+						$this->SubTheme = isset($DST['id'])
+							? SubTheme::updateOrCreate(['id' => $DST['id']], $DST)
+							: SubTheme::create($DST);
 					}
 				}
 			}
