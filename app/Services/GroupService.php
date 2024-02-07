@@ -47,7 +47,7 @@ class GroupService
 		$group = Group::find(1);
 		foreach ($data['units'] as $ModuleData) {
 			$ModuleData['group_id'] = $group->id;
-			$this->ModuleService->storeModule($ModuleData);
+			$this->ModuleService->updateOrCreateModule($ModuleData);
 		}
 
 		return $group;

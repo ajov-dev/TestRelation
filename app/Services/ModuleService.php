@@ -16,10 +16,21 @@ use Illuminate\Support\Facades\DB;
 class ModuleService
 {
 	// constructor
-	protected $module;
-	public function __construct(Module $module)
+	protected $GroupModule;
+	protected $Module;
+	protected $ModuleInstructor;
+	protected $ModuleTheme;
+	protected $SubTheme;
+	protected $Theme;
+
+	public function __construct(Module $Module, GroupModule $GroupModule, ModuleInstructor $ModuleInstructor, Theme $Theme, SubTheme $SubTheme, ModuleTheme $ModuleTheme)
 	{
-		$this->module = $module;
+		$this->GroupModule = $GroupModule;
+		$this->Module = $Module;
+		$this->ModuleInstructor = $ModuleInstructor;
+		$this->ModuleTheme = $ModuleTheme;
+		$this->SubTheme = $SubTheme;
+		$this->Theme = $Theme;
 	}
 	public function index()
 	{
@@ -28,56 +39,48 @@ class ModuleService
 		];
 	}
 
-	public function storeModule(array $DataModule)
+	public function updateOrCreateModule(array $DataModule)
 	{
 		return DB::transaction(function () use ($DataModule) {
 			$DataModule['created_by'] = 'admin';
 			$DataModule['updated_by'] = 'admin';
 
-			if (isset($DataModule['id'])) {
-				$this->module = Module::updateOrCreate(['id' => $DataModule['id']], $DataModule);
-			} else {
-				$this->module = Module::create($DataModule);
-			}
-			$GroupModule = GroupModule::updateOrCreate(
-				[
-					'group_id' => $DataModule['group_id'],
-					'modules_id' => $this->module->id
-				],
-				$DataModule
-			);
-			ModuleInstructor::updateOrCreate([
-				'group_module_id' => $GroupModule->id,
-				'instructor_id' => $DataModule['instructor_id']
-			], $DataModule);
+			$this->module = isset($DataModule['id'])
+			? Module::updateOrCreate(['id' => $DataModule['id']], $DataModule)
+			: Module::create($DataModule);
 
-			foreach ($DataModule['themes'] as $DataThemes) {
-				$DataThemes['created_by'] = $DataModule['created_by'];
-				$DataThemes['updated_by'] = $DataModule['updated_by'];
-				if (isset($DataThemes['id'])) {
-					$ModuleTheme = Theme::updateOrCreate(['id' => $DataThemes['id']], $DataThemes);
-				} else {
-					$ModuleTheme = Theme::create($DataThemes);
-				}
-				$DataThemes['modules_id'] = $this->module['id'];
-				$DataThemes['themes_id'] = $ModuleTheme['id'];
-				ModuleTheme::updateOrCreate([
-					'modules_id' => $DataModule['id'],
-					'themes_id' => $DataThemes['themes_id']
-				], $DataThemes);
+			$GroupModule = GroupModule::updateOrCreate(['group_id' => $DataModule['group_id'], 'modules_id' => $DataModule['id']], $DataModule);
 
-				foreach ($DataThemes['sub_themes'] as $DataSubThemes) {
-					$DataSubThemes['theme_id'] = $ModuleTheme['id'];
-					$DataSubThemes['created_by'] = $DataModule['created_by'];
-					$DataSubThemes['updated_by'] = $DataModule['updated_by'];
-					if (isset($DataSubThemes['id'])) {
-						SubTheme::updateOrCreate(['id' => $DataSubThemes['id']], $DataSubThemes);
-					} else {
-						SubTheme::create($DataSubThemes);
+			ModuleInstructor::updateOrCreate(['group_module_id' => $GroupModule['id']], ['instructor_id' => $DataModule['instructor_id']]);
+
+			if (isset($DataModule['themes'])) {
+				foreach ($DataModule['themes'] as $DataThemes) {
+					$DataThemes['created_by'] = $DataModule['created_by'];
+					$DataThemes['updated_by'] = $DataModule['updated_by'];
+
+					$this->Theme = isset($DataThemes['id'])
+					? Theme::updateOrCreate(['id' => $DataThemes['id']], $DataThemes)
+					: Theme::create($DataThemes);
+
+					$DataThemes['modules_id'] = $DataModule['id'];
+					$DataThemes['themes_id'] = $this->Theme['id'];
+					ModuleTheme::updateOrCreate([
+						'modules_id' => $DataModule['id'],
+						'themes_id' => $DataThemes['themes_id']
+					], $DataThemes);
+
+					foreach ($DataThemes['sub_themes'] as $DataSubThemes) {
+						$DataSubThemes['theme_id'] = $this->Theme['id'];
+						$DataSubThemes['created_by'] = $DataModule['created_by'];
+						$DataSubThemes['updated_by'] = $DataModule['updated_by'];
+
+						$this->SubTheme = isset($DataSubThemes['id'])
+						? SubTheme::updateOrCreate(['id' => $DataSubThemes['id']], $DataSubThemes)
+						: SubTheme::create($DataSubThemes);
 					}
 				}
 			}
-			return $this->module;
+			return [$this->Module];
 		});
 	}
 }

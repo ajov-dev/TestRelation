@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\Group;
+use App\Services\ModuleService;
+use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
-    //construcor
+    private ModuleService $ModuleService;
+	private Module $module;
 
-	public function __construct()
-	{
-
-	}
-
-	// public function index()
-	// {
-	// 	return [
-	// 		'modules' => Module::with(['themes.subThemes'])->get()
-	// 	];
-	// }
-
-	// store
+    public function __construct(ModuleService $ModuleService, Module $module)
+    {
+        $this->ModuleService = $ModuleService;
+		$this->module = $module;
+    }
 	public function store(Request $request)
 	{
-		$module = Module::create($request->all());
-		return response()->json($module, 201);
+		$units = $request->input('units');
+
+
+		foreach ($units as $unit) {
+			$unit['created_by'] = 'admin';
+			$unit['updated_by'] = 'admin';
+			$unit['group_id'] = $request->input('group_id');
+			$this->ModuleService->updateOrCreateModule($unit);
+		}
+
+		return Group::with(['modules' => function ($q) {
+			$q->with(['instructor', 'themes.sub_themes']);
+		}])->find($request->input('group_id'));
 	}
 }

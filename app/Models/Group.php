@@ -39,6 +39,6 @@ class Group extends Model
 
 	public function modules(): BelongsToMany
 	{
-		return $this->belongsToMany(Module::class, 'group_modules', 'modules_id', 'group_id');
+		return $this->belongsToMany(Module::class, 'group_modules', 'group_id', 'modules_id');
 	}
 }
