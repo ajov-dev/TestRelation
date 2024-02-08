@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->foreignId('group_module_id')->constrained('group_modules');
+            $table->foreignId('module_id')->constrained('group_modules');
             $table->foreignId('theme_id')->constrained('themes');
         });
     }

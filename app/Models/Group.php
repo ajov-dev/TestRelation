@@ -30,20 +30,10 @@ class Group extends Model
 		'updated_by',
 	];
 
-    public function academicActivity()
-    {
-        return $this->belongsTo(AcademicActivity::class);
-    }
-
-    // Relación muchos a muchos con modules
-    public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'group_modules');
-    }
-
-    // Relación uno a muchos con instructors a través de modules_instructor
-    public function instructors()
-    {
-        return $this->hasManyThrough(Instructor::class, GroupModule::class);
-    }
+	public function modules()
+	{
+		return $this->belongsToMany(Module::class, 'group_modules')
+		->using(GroupModule::class)
+		->withPivot('id');
+	}
 }

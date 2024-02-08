@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
 			$table->string('created_by')->nullable();
 			$table->string('updated_by')->nullable();
-			$table->foreignId('group_module_id')->constrained('group_modules');
+			$table->foreignId('module_id')->constrained('group_modules');
 			$table->foreignId('instructor_id')->constrained('instructors');
         });
     }
@@ -28,4 +28,4 @@ return new class extends Migration {
         Schema::dropIfExists('modules_instructor');
     }
 };
-// 
+//

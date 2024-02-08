@@ -13,21 +13,21 @@ class ModuleInstructorSeeder extends Seeder
     public function run(): void
     {
         ModuleInstructor::create([
-            'group_module_id' => 1,
+            'module_id' => 1,
             'instructor_id' => 1,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleInstructor::create([
-            'group_module_id' => 2,
+            'module_id' => 2,
             'instructor_id' => 2,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleInstructor::create([
-            'group_module_id' => 3,
+            'module_id' => 3,
             'instructor_id' => 3,
             'created_by' => 'admin',
             'updated_by' => 'admin',

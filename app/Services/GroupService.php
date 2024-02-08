@@ -8,6 +8,7 @@ use App\Models\Module;
 use App\Models\ModuleInstructor;
 use App\Models\ModuleTheme;
 use App\Models\SubTheme;
+use App\Models\AcademicActivity;
 use App\Services\ModuleService;
 use Illuminate\Support\Facades\DB;
 
@@ -32,15 +33,16 @@ class GroupService
 
 	public function index()
 	{
-		// return SubTheme::with('modulesThemes')->get();
 		return [
-			'grupos' => Module::with([
-				'instructors',
-				'themes'
-				 => function ($query) {
-					$query->with(['sub_themes']);
+			'academic_activity_id' => AcademicActivity::with([
+				'groups' => function ($q){
+					$q->with([
+						'modules' => function ($q){
+							$q->with('themes.sub_themes');
+						}
+					]);
 				}
-			])->get()
+			])->find(1),
 		];
 	}
 

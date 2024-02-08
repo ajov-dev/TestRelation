@@ -51,7 +51,7 @@ class ModuleService
 
 			$this->GM = GroupModule::updateOrCreate(['group_id' => $DM['group_id'], 'modules_id' => $DM['id']], $DM);
 
-			ModuleInstructor::updateOrCreate(['group_module_id' => $this->GM['id']], ['instructor_id' => $DM['instructor_id']]);
+			ModuleInstructor::updateOrCreate(['module_id' => $this->GM['id']], ['instructor_id' => $DM['instructor_id']]);
 
 			if (isset($DM['themes'])) {
 				foreach ($DM['themes'] as $DT) {
@@ -66,12 +66,12 @@ class ModuleService
 					$DT['theme_id'] = $this->Theme['id'];
 
 					ModuleTheme::updateOrCreate([
-						'group_module_id' => $DM['id'],
+						'module_id' => $DM['id'],
 						'theme_id' => $this->Theme['id']
 					], $DT);
 
 					foreach ($DT['sub_themes'] as $DST) {
-						$DST['module_theme_id'] = $this->Theme['id'];
+						$DST['module_id'] = $this->Theme['id'];
 						$DST['created_by'] = $DM['created_by'];
 						$DST['updated_by'] = $DM['updated_by'];
 
@@ -95,8 +95,8 @@ class ModuleService
 				->get();
 
 			$groupsModules->each(function ($groupModule) {
-				ModuleTheme::destroy('group_module_id', $groupModule->id);
-				ModuleInstructor::destroy('group_module_id', $groupModule->id);
+				ModuleTheme::destroy('module_id', $groupModule->id);
+				ModuleInstructor::destroy('module_id', $groupModule->id);
 				GroupModule::destroy($groupModule->id);
 			});
 		});

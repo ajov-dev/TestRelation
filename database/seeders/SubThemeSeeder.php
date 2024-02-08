@@ -15,21 +15,21 @@ class SubThemeSeeder extends Seeder
 	{
 
 		SubTheme::create([
-			'module_theme_id' => 1, // Default
+			'theme_id' => 1, // Default
 			'description' => 'theme 1 - Default',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'module_theme_id' => 2, // Default
+			'theme_id' => 2, // Default
 			'description' => 'theme 1 - Dark',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'module_theme_id' => 3, // Default
+			'theme_id' => 3, // Default
 			'description' => 'theme 1 - Light',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',

@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @method static create(array $array)
  */
-class ModuleTheme extends Model
+class ModuleTheme extends Pivot
 {
 	use HasFactory;
 
 	protected $table = 'modules_themes';
 	protected $fillable = [
-		'group_module_id',
+		'module',
 		'theme_id',
 		'created_by',
 		'updated_by',
@@ -26,9 +26,4 @@ class ModuleTheme extends Model
 		'created_by',
 		'updated_by',
 	];
-
-	public function subThemes()
-    {
-        return $this->hasMany(SubTheme::class, 'module_theme_id');
-    }
 }
