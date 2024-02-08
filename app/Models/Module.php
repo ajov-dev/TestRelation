@@ -35,7 +35,7 @@ class Module extends Model
 	}
 	public function themes()
 	{
-		return $this->belongsToMany(Theme::class, 'modules_themes', 'group_module_id', 'themes_id');
+		return $this->belongsToMany(Theme::class, 'modules_themes', 'group_module_id', 'theme_id');
 	}
 	public function groups(): BelongsToMany
 	{
