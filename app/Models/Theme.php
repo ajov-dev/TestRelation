@@ -32,7 +32,7 @@ class Theme extends Model
 
 	public function modules(): BelongsToMany
 	{
-		return $this->belongsToMany(Module::class, 'modules_themes', 'themes_id', 'modules_id');
+		return $this->belongsToMany(Module::class, 'modules_themes', 'theme_id', 'modules_id');
 	}
 
 	public function sub_themes(): HasMany

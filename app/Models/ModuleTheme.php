@@ -15,7 +15,7 @@ class ModuleTheme extends Model
 	protected $table = 'modules_themes';
 	protected $fillable = [
 		'group_module_id',
-		'themes_id',
+		'theme_id',
 		'created_by',
 		'updated_by',
 	];
