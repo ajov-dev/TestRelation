@@ -29,18 +29,16 @@ class Module extends Model
 	];
 	use HasFactory;
 
-	public function groups(): BelongsToMany
-	{
-		return $this->belongsToMany(Group::class, 'group_modules', 'group_id', 'modules_id');
-	}
-
 	public function instructor()
 	{
 		return $this->belongsToMany(Instructor::class, 'modules_instructor', 'group_module_id', 'instructor_id');
 	}
-
 	public function themes()
 	{
-		return $this->belongsToMany(Theme::class, 'modules_themes', 'modules_id', 'themes_id');
+		return $this->belongsToMany(Theme::class, 'modules_themes', 'group_module_id', 'themes_id');
+	}
+	public function groups(): BelongsToMany
+	{
+		return $this->belongsToMany(Group::class, 'group_modules', 'group_id', 'modules_id');
 	}
 }

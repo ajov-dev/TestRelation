@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Group;
+use App\Models\GroupModule;
+use App\Models\ModuleInstructor;
+use App\Models\ModuleTheme;
 use App\Services\ModuleService;
 use Illuminate\Support\Facades\DB;
 
@@ -36,20 +39,17 @@ class GroupService
 		];
 	}
 
-	public function store(array $request)
+	public function storeGroups($data): void
 	{
-		$this->group = Group::create($request);
-		return $this->group->toArray();
-	}
+		$this->ModuleService->destroyModules($data);
 
-	public function storeGroup($data)
-	{
-		$group = Group::find(1);
+		$group = Group::find($data['group_id']);
+
 		foreach ($data['units'] as $ModuleData) {
+
 			$ModuleData['group_id'] = $group->id;
+
 			$this->ModuleService->updateOrCreateModule($ModuleData);
 		}
-
-		return $group;
 	}
 }

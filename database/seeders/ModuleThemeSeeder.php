@@ -15,63 +15,63 @@ class ModuleThemeSeeder extends Seeder
     {
         //
         ModuleTheme::create([
-            'modules_id' => 1,
+            'group_module_id' => 1,
             'theme_id' => 1,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 1,
+            'group_module_id' => 1,
             'theme_id' => 2,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 1,
+            'group_module_id' => 1,
             'theme_id' => 3,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 2,
+            'group_module_id' => 2,
             'theme_id' => 1,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 2,
+            'group_module_id' => 2,
             'theme_id' => 2,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 2,
+            'group_module_id' => 2,
             'theme_id' => 3,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 3,
+            'group_module_id' => 3,
             'theme_id' => 1,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 3,
+            'group_module_id' => 3,
             'theme_id' => 2,
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
 
         ModuleTheme::create([
-            'modules_id' => 3,
+            'group_module_id' => 3,
             'theme_id' => 3,
             'created_by' => 'admin',
             'updated_by' => 'admin',

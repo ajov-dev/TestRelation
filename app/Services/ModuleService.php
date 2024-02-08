@@ -39,7 +39,7 @@ class ModuleService
 		];
 	}
 
-	public function updateOrCreateModule(array $DM)
+	public function updateOrCreateModules(array $DM)
 	{
 		return DB::transaction(function () use ($DM) {
 			$DM['created_by'] = 'admin';
@@ -63,11 +63,11 @@ class ModuleService
 						: Theme::create($DT);
 
 					$DT['modules_id'] = $DM['id'];
-					$DT['themes_id'] = $this->Theme['id'];
+					$DT['theme_id'] = $this->Theme['id'];
 
 					ModuleTheme::updateOrCreate([
-						'modules_id' => $DM['id'],
-						'themes_id' => $this->Theme['id']
+						'group_module_id' => $DM['id'],
+						'theme_id' => $this->Theme['id']
 					], $DT);
 
 					foreach ($DT['sub_themes'] as $DST) {
@@ -82,6 +82,21 @@ class ModuleService
 				}
 			}
 			return [$this->Module];
+		});
+	}
+
+	public function destroyModules($data): void
+	{
+		$modules = collect($data['units'])->pluck('id')->toArray();
+
+		$agrupaciones = GroupModule::where('group_id', $data['group_id'])
+			->whereNotIn('modules_id', $modules)
+			->get();
+
+		$agrupaciones->each(function ($agrupacion) {
+			ModuleTheme::destroy('group_module_id', $agrupacion->id);
+			ModuleInstructor::destroy('group_module_id', $agrupacion->id);
+			GroupModule::destroy($agrupacion->id);
 		});
 	}
 }
