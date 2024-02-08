@@ -36,8 +36,9 @@ class GroupService
 		return [
 			'grupos' => Module::with([
 				'instructor',
-				'themes' => function ($query) {
-					$query->with(['sub_themes']);
+				'themes'
+				 => function ($query) {
+					$query->with(['groupModules']);
 				}
 			])->get()
 		];
