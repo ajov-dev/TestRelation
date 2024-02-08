@@ -25,9 +25,8 @@ class Instructor extends Model
 		'created_by',
 		'updated_by',
 	];
-
-	public function modules()
-	{
-		return $this->belongsToMany(GroupModule::class, 'modules_instructor', 'instructor_id', 'group_module_id');
-	}
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'modules_instructor');
+    }
 }

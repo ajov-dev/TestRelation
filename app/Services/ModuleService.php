@@ -71,7 +71,7 @@ class ModuleService
 					], $DT);
 
 					foreach ($DT['sub_themes'] as $DST) {
-						$DST['theme_id'] = $this->Theme['id'];
+						$DST['module_theme_id'] = $this->Theme['id'];
 						$DST['created_by'] = $DM['created_by'];
 						$DST['updated_by'] = $DM['updated_by'];
 
@@ -89,7 +89,7 @@ class ModuleService
 	{
 		$modules = collect($data['units'])->pluck('id')->toArray();
 
-		DB::transaction(function () use ($modules) {
+		DB::transaction(function () use ($modules, $data) {
 			$groupsModules = GroupModule::where('group_id', $data['group_id'])
 				->whereNotIn('modules_id', $modules)
 				->get();

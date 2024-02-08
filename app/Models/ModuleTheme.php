@@ -26,4 +26,9 @@ class ModuleTheme extends Model
 		'created_by',
 		'updated_by',
 	];
+
+	public function subThemes()
+    {
+        return $this->hasMany(SubTheme::class, 'module_theme_id');
+    }
 }

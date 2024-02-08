@@ -20,7 +20,7 @@ class AcademicActivity extends Model
         'updated_by',
     ];
 
-    public function groups(): HasMany
+    public function groups()
     {
         return $this->hasMany(Group::class);
     }

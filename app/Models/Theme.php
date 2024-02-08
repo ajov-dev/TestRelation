@@ -30,13 +30,8 @@ class Theme extends Model
 		'pivot'
 	];
 
-	public function modules(): BelongsToMany
-	{
-		return $this->belongsToMany(Module::class, 'modules_themes', 'theme_id', 'modules_id');
-	}
-
-	public function sub_themes(): HasMany
-	{
-		return $this->hasMany(SubTheme::class, 'theme_id');
-	}
+    public function sub_themes()
+    {
+        return $this->belongsToMany(SubTheme::class, 'modules_themes', 'group_module_id', 'theme_id');
+    }
 }

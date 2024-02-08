@@ -16,7 +16,7 @@ class SubTheme extends Model
 
 	protected $table = 'sub_themes';
 	protected $fillable = [
-		'theme_id',
+		'module_theme_id',
 		'description',
 		'created_by',
 		'updated_by',
@@ -29,4 +29,8 @@ class SubTheme extends Model
 		'created_by',
 		'updated_by',
 	];
+    public function themes()
+    {
+        return $this->belongsToMany(ModuleTheme::class, 'themes', 'module_theme_id', 'theme_id');
+    }
 }

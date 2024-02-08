@@ -26,4 +26,15 @@ class GroupModule extends Model
 		'created_by',
 		'updated_by',
 	];
+
+	public function themes()
+    {
+        return $this->belongsToMany(Theme::class, 'modules_themes');
+    }
+
+    // Relación muchos a muchos con instructors a través de modules_instructor
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class, 'modules_instructor');
+    }
 }

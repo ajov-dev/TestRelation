@@ -35,16 +35,16 @@ class GroupService
 		// return SubTheme::with('modulesThemes')->get();
 		return [
 			'grupos' => Module::with([
-				'instructor',
+				'instructors',
 				'themes'
 				 => function ($query) {
-					$query->with(['groupModules']);
+					$query->with(['sub_themes']);
 				}
 			])->get()
 		];
 	}
 
-	public function storeGroups($data): void
+	public function storeGroups(array $data): void
 	{
 		$this->ModuleService->destroyModules($data);
 

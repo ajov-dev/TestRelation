@@ -29,16 +29,23 @@ class Module extends Model
 	];
 	use HasFactory;
 
-	public function instructor()
-	{
-		return $this->belongsToMany(Instructor::class, 'modules_instructor', 'group_module_id', 'instructor_id');
-	}
-	public function themes()
-	{
-		return $this->belongsToMany(Theme::class, 'modules_themes', 'group_module_id', 'theme_id');
-	}
-	public function groups(): BelongsToMany
-	{
-		return $this->belongsToMany(Group::class, 'group_modules', 'group_id', 'modules_id');
-	}
+    // Relación muchos a muchos con groups a través de group_modules
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_modules');
+    }
+
+    // Relación muchos a muchos con themes a través de modules_themes
+    public function themes()
+    {
+        return $this->belongsToMany(Theme::class, 'modules_themes', 'group_module_id', 'theme_id');
+    }
+
+    // Relación muchos a muchos con instructors a través de modules_instructor
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class, 'modules_instructor', 'group_module_id', 'instructor_id');
+    }
+
+
 }
