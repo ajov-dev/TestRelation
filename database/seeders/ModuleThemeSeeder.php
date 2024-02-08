@@ -35,46 +35,5 @@ class ModuleThemeSeeder extends Seeder
             'updated_by' => 'admin',
         ]);
 
-        ModuleTheme::create([
-            'group_module_id' => 2,
-            'theme_id' => 1,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        ModuleTheme::create([
-            'group_module_id' => 2,
-            'theme_id' => 2,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        ModuleTheme::create([
-            'group_module_id' => 2,
-            'theme_id' => 3,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        ModuleTheme::create([
-            'group_module_id' => 3,
-            'theme_id' => 1,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        ModuleTheme::create([
-            'group_module_id' => 3,
-            'theme_id' => 2,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        ModuleTheme::create([
-            'group_module_id' => 3,
-            'theme_id' => 3,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
     }
 }

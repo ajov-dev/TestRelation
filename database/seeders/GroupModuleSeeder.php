@@ -34,47 +34,5 @@ class GroupModuleSeeder extends Seeder
             'created_by' => 'admin',
             'updated_by' => 'admin',
         ]);
-
-        GroupModule::create([
-            'group_id' => 2,
-            'modules_id' => 1,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        GroupModule::create([
-            'group_id' => 2,
-            'modules_id' => 2,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        GroupModule::create([
-            'group_id' => 2,
-            'modules_id' => 3,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        GroupModule::create([
-            'group_id' => 3,
-            'modules_id' => 1,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        GroupModule::create([
-            'group_id' => 3,
-            'modules_id' => 2,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
-
-        GroupModule::create([
-            'group_id' => 3,
-            'modules_id' => 3,
-            'created_by' => 'admin',
-            'updated_by' => 'admin',
-        ]);
     }
 }

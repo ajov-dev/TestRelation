@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\Group;
 use App\Models\GroupModule;
+use App\Models\Module;
 use App\Models\ModuleInstructor;
 use App\Models\ModuleTheme;
+use App\Models\SubTheme;
 use App\Services\ModuleService;
 use Illuminate\Support\Facades\DB;
 
@@ -30,10 +32,12 @@ class GroupService
 
 	public function index()
 	{
+		// return SubTheme::with('modulesThemes')->get();
 		return [
-			'grupos' => Group::latest()->with([
-				'modules' => function ($query) {
-					$query->with(['instructor', 'themes.sub_themes']);
+			'grupos' => Module::with([
+				'instructor',
+				'themes' => function ($query) {
+					$query->with(['sub_themes']);
 				}
 			])->get()
 		];
@@ -49,7 +53,7 @@ class GroupService
 
 			$ModuleData['group_id'] = $group->id;
 
-			$this->ModuleService->updateOrCreateModule($ModuleData);
+			$this->ModuleService->updateOrCreateModules($ModuleData);
 		}
 	}
 }

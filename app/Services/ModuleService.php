@@ -63,11 +63,11 @@ class ModuleService
 						: Theme::create($DT);
 
 					$DT['modules_id'] = $DM['id'];
-					$DT['theme_id'] = $this->Theme['id'];
+					$DT['themes_id'] = $this->Theme['id'];
 
 					ModuleTheme::updateOrCreate([
 						'group_module_id' => $DM['id'],
-						'theme_id' => $this->Theme['id']
+						'themes_id' => $this->Theme['id']
 					], $DT);
 
 					foreach ($DT['sub_themes'] as $DST) {
@@ -89,14 +89,14 @@ class ModuleService
 	{
 		$modules = collect($data['units'])->pluck('id')->toArray();
 
-		$agrupaciones = GroupModule::where('group_id', $data['group_id'])
+		$groupsModules = GroupModule::where('group_id', $data['group_id'])
 			->whereNotIn('modules_id', $modules)
 			->get();
 
-		$agrupaciones->each(function ($agrupacion) {
-			ModuleTheme::destroy('group_module_id', $agrupacion->id);
-			ModuleInstructor::destroy('group_module_id', $agrupacion->id);
-			GroupModule::destroy($agrupacion->id);
+		$groupsModules->each(function ($groupModule) {
+			ModuleTheme::destroy('group_module_id', $groupModule->id);
+			ModuleInstructor::destroy('group_module_id', $groupModule->id);
+			GroupModule::destroy($groupModule->id);
 		});
 	}
 }
