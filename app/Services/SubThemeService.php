@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Http\Resources\SubThemeResource;
 use App\Models\SubTheme;
-use App\Models\Theme;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -13,46 +11,34 @@ use Illuminate\Support\Facades\DB;
  */
 class SubThemeService
 {
-    private $subTheme;
-
-    public function __construct(SubTheme $subTheme)
-    {
-        $this->subTheme = $subTheme;
-
-    }
-
+	private SubTheme $subTheme;
+	public function __construct(SubTheme $subTheme)
+	{
+		$this->subTheme = $subTheme;
+	}
 	public function index()
 	{
 		$response = SubTheme::get();
-
 		return SubThemeResource::collection($response);
 	}
-
-    public function storeSubTheme(array $arraySubTheme, int $themeID): array
-    {
-        return DB::transaction(function () use ($arraySubTheme, $themeID) {
-            foreach ($arraySubTheme['subThemes'] as $subThemeData) {
-
-                $subThemeData['theme_id'] = $themeID;
-
-                Subtheme::create($subThemeData);
-            }
-
-            return [
-                'subThemes' => Theme::where('id', $themeID)->with('subThemes')->get()
-            ];
-        });
-
-    }
-
-    public function update(int $id)
-    {
-
-    }
-
-    public function destroy()
-    {
-        //
-    }
-
+	public function updateOrCreateSubThemes(array $DST): void
+	{
+		DB::transaction(function () use ($DST) {
+			$this->SubTheme = isset($DST['id'])
+				? SubTheme::updateOrCreate(['theme_id' => $DST['id']], $DST)
+				: SubTheme::create($DST);
+		});
+	}
+	public function destroySubThemes($data): void
+	{
+		$themes = collect($data['sub_themes'])->pluck('id')->toArray();
+		DB::transaction(function () use ($themes, $data) {
+			$ModuleThemes = SubTheme::where('theme_id', $data['id'])
+				->whereNotIn('theme_id', $themes)
+				->get();
+			$ModuleThemes->each(function ($ModuleTheme) {
+				SubTheme::destroy('theme_id', $ModuleTheme->id);
+			});
+		});
+	}
 }

@@ -20,6 +20,10 @@ class ModuleService
 	protected GroupModule $GroupModule;
 	protected Theme $Theme;
 	protected SubTheme $SubTheme;
+	protected ModuleInstructor $ModuleInstructor;
+	protected ModuleTheme $ModuleTheme;
+	protected ThemeService $ServiceTheme;
+
 	public function index()
 	{
 		$response = Module::with([
@@ -32,7 +36,6 @@ class ModuleService
 
 	public function updateOrCreateModules(array $DataModule)
 	{
-
 		return DB::transaction(function () use ($DataModule) {
 			$DataModule['created_by'] = 'admin';
 			$DataModule['updated_by'] = 'admin';
@@ -43,93 +46,39 @@ class ModuleService
 
 			$this->GroupModule = GroupModule::updateOrCreate(['group_id' => $DataModule['group_id'], 'module_id' => $DataModule['id']], $DataModule);
 
-
-			ModuleInstructor::updateOrCreate(['module_id' => $this->GroupModule['id']], ['instructor_id' => $DataModule['instructor_id']['id'], ]);
+			ModuleInstructor::updateOrCreate(['module_id' => $this->GroupModule['id']], ['instructor_id' => $DataModule['instructor_id']]);
 
 			if (isset($DataModule['themes'])) {
-				//$this->destroyThemes($DataModule); // destroy themes
+				dd ($this->ServiceTheme->destroyThemes($DataModule)); // destroy themes
 				foreach ($DataModule['themes'] as $DT) {
 					$DT['created_by'] = $DataModule['created_by'];
 					$DT['updated_by'] = $DataModule['updated_by'];
-
-					$this->Theme = isset($DT['id'])
-						? Theme::updateOrCreate(['id' => $DT['id']], $DT)
-						: Theme::create($DT);
-
-					$DT['module_id'] = $DataModule['id'];
-					$DT['theme_id'] = $this->Theme['id'];
-
-					$ModuleTheme = ModuleTheme::updateOrCreate([
-						'module_id' => $DataModule['id'],
-						'theme_id' => $this->Theme['id']
-					], $DT);
-
-					foreach ($DT['sub_themes'] as $DST) {
-						$DST['theme_id'] = $ModuleTheme['id'];
-						$DST['created_by'] = $DataModule['created_by'];
-						$DST['updated_by'] = $DataModule['updated_by'];
-
-						$this->SubTheme = isset($DST['id'])
-							? SubTheme::updateOrCreate(['theme_id' => $ModuleTheme['id']], $DST)
-							: SubTheme::create($DST);
-					}
+					$DT['module_id'] = $this->GroupModule['id'];
+					$this->ServiceTheme->updateOrCreateThemes($DT);
 				}
 			}
 			return [$this->Module];
 		});
 	}
 
-	public function destroyModules($data): void
+	public function destroyModules($data)
 	{
-		$modules = collect($data['units'])->pluck('id')->toArray();
-
-		DB::transaction(function () use ($modules, $data) {
-			$groupsModules = GroupModule::where('group_id', $data['group_id'])
+		$modules = collect($data['data'])->pluck('id')->toArray();
+		return dd (DB::transaction(function () use ($modules, $data) {
+			$groupsModules = GroupModule::where('group_id', $data['id'])
 				->whereNotIn('module_id', $modules)
 				->get();
 
 			$groupsModules->each(function ($groupModule) {
 				$moduleTheme = ModuleTheme::where('module_id', $groupModule->id)->first();
-				// $moduleTheme->destroy();
 				SubTheme::where('theme_id', $moduleTheme->id)->delete();
 				ModuleTheme::where('module_id', $groupModule->id)->delete();
 				ModuleInstructor::where('module_id', $groupModule->id)->delete();
 				GroupModule::find($groupModule->id)->delete();
 			});
-		});
 
-	}
-
-	public function destroyThemes($data): void
-	{
-		$themes = collect($data['themes'])->pluck('id')->toArray();
-
-		DB::transaction(function () use ($themes, $data) {
-			$ModuleThemes = ModuleTheme::where('module_id', $data['id'])
-				->whereNotIn('theme_id', $themes)
-				->get();
-
-			$ModuleThemes->each(function ($ModuleTheme) {
-				SubTheme::destroy('theme_id',$ModuleTheme->id);
-				ModuleTheme::destroy($ModuleTheme->id);
-			});
-		});
-
-	}
-
-	public function destroySubThemes($data): void
-	{
-		$themes = collect($data['sub_themes'])->pluck('id')->toArray();
-
-		DB::transaction(function () use ($themes, $data) {
-			$ModuleThemes = SubTheme::where('theme_id', $data['id'])
-				->whereNotIn('theme_id', $themes)
-				->get();
-
-			$ModuleThemes->each(function ($ModuleTheme) {
-				SubTheme::destroy('theme_id',$ModuleTheme->id);
-			});
-		});
+			return $groupsModules;
+		}));
 
 	}
 }

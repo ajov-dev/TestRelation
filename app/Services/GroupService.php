@@ -13,10 +13,8 @@ use App\Http\Resources\AcademicActivityResource;
  */
 class GroupService
 {
-
 	public const create_by = 'admin';
 	public const update_by = 'admin';
-
 	protected Group $group;
 	protected ModuleService $ModuleService;
 
@@ -25,7 +23,6 @@ class GroupService
 		$this->group = $group;
 		$this->ModuleService = $ModuleService;
 	}
-
 	public function index()
 	{
 		$response = $this->group->with([
@@ -39,20 +36,13 @@ class GroupService
 
 		return GroupResource::collection($response);
 	}
-
-
-
-	public function storeGroups(array $data): void
+	public function store(array $data): void
 	{
 		DB::transaction(function () use ($data) {
+			$group = Group::find($data['id']);
 			$this->ModuleService->destroyModules($data);
-
-			$group = Group::find($data['group_id']);
-
-			foreach ($data['units'] as $ModuleData) {
-
-				$ModuleData['group_id'] = $group->id;
-
+			foreach ($data['data'] as $ModuleData) {
+				$ModuleData['group_id'] = $group['id'];
 				$this->ModuleService->updateOrCreateModules($ModuleData);
 			}
 		});
