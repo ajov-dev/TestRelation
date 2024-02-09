@@ -38,7 +38,7 @@ class GroupService
 					$q->with([
 						'modules' => function ($q){
 							$q->with([
-								'instructor', 'themes.sub_themes']);
+								'instructor', 'themes.sub_theme']);
 						}
 					]);
 				}

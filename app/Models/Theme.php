@@ -30,7 +30,7 @@ class Theme extends Model
 		'pivot'
 	];
 
-	public function sub_themeS()
+	public function sub_theme()
 	{
 		return $this->hasMany(SubTheme::class, 'theme_id');
 	}
