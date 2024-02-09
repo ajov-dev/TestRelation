@@ -27,7 +27,6 @@ class GroupService
 	public function __construct(Group $group, ModuleService $ModuleService)
 	{
 		$this->group = $group;
-
 		$this->ModuleService = $ModuleService;
 	}
 
@@ -38,7 +37,8 @@ class GroupService
 				'groups' => function ($q){
 					$q->with([
 						'modules' => function ($q){
-							$q->with('themes.sub_themes');
+							$q->with([
+								'instructor', 'themes.sub_themes']);
 						}
 					]);
 				}
@@ -48,15 +48,17 @@ class GroupService
 
 	public function storeGroups(array $data): void
 	{
-		$this->ModuleService->destroyModules($data);
+		DB::transaction(function () use ($data) {
+			$this->ModuleService->destroyModules($data);
 
-		$group = Group::find($data['group_id']);
+			$group = Group::find($data['group_id']);
 
-		foreach ($data['units'] as $ModuleData) {
+			foreach ($data['units'] as $ModuleData) {
 
-			$ModuleData['group_id'] = $group->id;
+				$ModuleData['group_id'] = $group->id;
 
-			$this->ModuleService->updateOrCreateModules($ModuleData);
-		}
+				$this->ModuleService->updateOrCreateModules($ModuleData);
+			}
+		});
 	}
 }

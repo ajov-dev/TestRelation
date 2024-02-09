@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('group_modules', function (Blueprint $table) {
+        Schema::create('group_module', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('created_by')->nullable();
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_modules');
+        Schema::dropIfExists('group_module');
     }
 };

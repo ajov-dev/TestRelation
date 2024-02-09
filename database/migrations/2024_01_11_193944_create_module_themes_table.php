@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('modules_themes', function (Blueprint $table) {
+        Schema::create('module_theme', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->foreignId('module_id')->constrained('group_modules');
+            $table->foreignId('module_id')->constrained('group_module');
             $table->foreignId('theme_id')->constrained('themes');
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('modules_themes');
+        Schema::dropIfExists('module_theme');
     }
 };

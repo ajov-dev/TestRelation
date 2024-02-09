@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @method static create(array $array)
  */
-class ModuleInstructor extends Model
+class ModuleInstructor extends Pivot
 {
 	use HasFactory;
 
-	protected $table = 'modules_instructor';
+	protected $table = 'module_instructor';
 
 	protected $fillable = [
 		'module_id',

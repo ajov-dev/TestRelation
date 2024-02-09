@@ -10,13 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('sub_themes', function (Blueprint $table) {
+        Schema::create('sub_theme', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('description');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->foreignId('theme_id')->constrained('modules_themes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('theme_id')->constrained('module_theme')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_themes');
+        Schema::dropIfExists('sub_theme');
     }
 };

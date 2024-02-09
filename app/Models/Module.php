@@ -30,8 +30,12 @@ class Module extends Model
 
 	public function themes()
 	{
-		return $this->belongsToMany(Theme::class, 'modules_themes')
-		->using(ModuleTheme::class)
-		->withPivot('id');
+		return $this->belongsToMany(Theme::class, ModuleTheme::class);
 	}
+
+    public function instructor()
+    {
+        return $this->belongsToMany(Instructor::class, ModuleInstructor::class);
+    }
+
 }

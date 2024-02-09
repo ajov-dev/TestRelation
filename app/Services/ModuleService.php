@@ -41,6 +41,7 @@ class ModuleService
 
 	public function updateOrCreateModules(array $DM)
 	{
+
 		return DB::transaction(function () use ($DM) {
 			$DM['created_by'] = 'admin';
 			$DM['updated_by'] = 'admin';
@@ -49,11 +50,13 @@ class ModuleService
 				? Module::updateOrCreate(['id' => $DM['id']], $DM)
 				: Module::create($DM);
 
-			$this->GM = GroupModule::updateOrCreate(['group_id' => $DM['group_id'], 'modules_id' => $DM['id']], $DM);
+			$this->GM = GroupModule::updateOrCreate(['group_id' => $DM['group_id'], 'module_id' => $DM['id']], $DM);
 
-			ModuleInstructor::updateOrCreate(['module_id' => $this->GM['id']], ['instructor_id' => $DM['instructor_id']]);
+			ModuleInstructor::updateOrCreate(['module_id' => $this->GM['id']], ['instructor_id' => (int )$DM['instructor_id']]);
+
 
 			if (isset($DM['themes'])) {
+				//$this->SubTheme->destroyModules($DM); // destroy themes
 				foreach ($DM['themes'] as $DT) {
 					$DT['created_by'] = $DM['created_by'];
 					$DT['updated_by'] = $DM['updated_by'];
@@ -62,21 +65,21 @@ class ModuleService
 						? Theme::updateOrCreate(['id' => $DT['id']], $DT)
 						: Theme::create($DT);
 
-					$DT['modules_id'] = $DM['id'];
+					$DT['module_id'] = $DM['id'];
 					$DT['theme_id'] = $this->Theme['id'];
 
-					ModuleTheme::updateOrCreate([
+					$ModuleTheme = ModuleTheme::updateOrCreate([
 						'module_id' => $DM['id'],
 						'theme_id' => $this->Theme['id']
 					], $DT);
 
-					foreach ($DT['sub_themes'] as $DST) {
-						$DST['module_id'] = $this->Theme['id'];
+					foreach ($DT['sub_theme'] as $DST) {
+						$DST['theme_id'] = $ModuleTheme['id'];
 						$DST['created_by'] = $DM['created_by'];
 						$DST['updated_by'] = $DM['updated_by'];
 
 						$this->SubTheme = isset($DST['id'])
-							? SubTheme::updateOrCreate(['id' => $DST['id']], $DST)
+							? SubTheme::updateOrCreate(['theme_id' => $DST['id']], $DST)
 							: SubTheme::create($DST);
 					}
 				}
@@ -91,13 +94,13 @@ class ModuleService
 
 		DB::transaction(function () use ($modules, $data) {
 			$groupsModules = GroupModule::where('group_id', $data['group_id'])
-				->whereNotIn('modules_id', $modules)
+				->whereNotIn('module_id', $modules)
 				->get();
 
 			$groupsModules->each(function ($groupModule) {
+				GroupModule::destroy($groupModule->id);
 				ModuleTheme::destroy('module_id', $groupModule->id);
 				ModuleInstructor::destroy('module_id', $groupModule->id);
-				GroupModule::destroy($groupModule->id);
 			});
 		});
 

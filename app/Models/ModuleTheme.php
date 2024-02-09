@@ -12,7 +12,7 @@ class ModuleTheme extends Pivot
 {
 	use HasFactory;
 
-	protected $table = 'modules_themes';
+	protected $table = 'module_theme';
 	protected $fillable = [
 		'module',
 		'theme_id',

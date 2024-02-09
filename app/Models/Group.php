@@ -32,7 +32,7 @@ class Group extends Model
 
 	public function modules()
 	{
-		return $this->belongsToMany(Module::class, 'group_modules')
+		return $this->belongsToMany(Module::class, 'group_module')
 		->using(GroupModule::class)
 		->withPivot('id');
 	}

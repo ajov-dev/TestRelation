@@ -13,7 +13,7 @@ class SubTheme extends Pivot
 {
 	use HasFactory;
 
-	protected $table = 'sub_themes';
+	protected $table = 'sub_theme';
 	protected $fillable = [
 		'theme_id',
 		'description',

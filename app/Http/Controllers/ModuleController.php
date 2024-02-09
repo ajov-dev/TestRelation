@@ -30,7 +30,7 @@ class ModuleController extends Controller
 		}
 
 		return Group::with(['modules' => function ($q) {
-			$q->with(['instructor', 'themes.sub_themes']);
+			$q->with(['instructor', 'themes.sub_theme']);
 		}])->find($request->input('group_id'));
 	}
 }

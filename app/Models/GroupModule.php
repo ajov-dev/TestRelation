@@ -12,7 +12,7 @@ class GroupModule extends pivot
 {
 	use HasFactory;
 
-	protected $table = 'group_modules';
+	protected $table = 'group_module';
 	protected $fillable = [
 		'group_id',
 		'module_id',
