@@ -16,6 +16,8 @@ class InstructorResource extends JsonResource
     {
         return [
 			'instructor_id' => $this->id,
+			'instructor_name' => $this->firstname,
+			'instructor_lastname' => $this->lastname,
 		];
     }
 }
