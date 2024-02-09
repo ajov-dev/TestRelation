@@ -21,13 +21,7 @@ class GroupController extends Controller
 
 	public function index()
 	{
-		try {
-			return $this->groupService->index();
-		} catch (Exception $e) {
-			return [
-				'error' => $e->getMessage(),
-			];
-		}
+		return $this->groupService->index();
 	}
 
 	public function store(Request $request)
@@ -47,33 +41,4 @@ class GroupController extends Controller
 			], 500);
 		}
 	}
-
-	public function show($id): Group
-	{
-		return Group::with(['modules.themes.subThemes'])->find($id);
-		//return $this->groupService->show($id);
-	}
-
-	public function update(Request $request, int $id): array
-	{
-		try {
-		} catch (Exception $e) {
-			return [
-				'error' => $e->getMessage(),
-			];
-		}
-	}
-
-	public function destroy(int $id): array
-	{
-		try {
-			return $this->groupService->destroy($id);
-		} catch (Exception $e) {
-			return [
-				'error' => $e->getMessage(),
-			];
-		}
-	}
-
-
 }

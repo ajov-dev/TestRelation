@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\GroupResource;
 use App\Models\AcademicActivity;
 use App\Models\Group;
 use Illuminate\Support\Facades\DB;
@@ -27,21 +28,17 @@ class GroupService
 
 	public function index()
 	{
-		$academicActivity  = AcademicActivity::with([
-			'groups' => function ($q) {
+		$response = $this->group->with([
+			'modules' => function ($q) {
 				$q->with([
-					'modules' => function ($q) {
-						$q->with([
-							'instructor',
-							'themes.sub_theme',
-						]);
-					}
+					'instructor',
+					'themes.sub_theme'
 				]);
 			}
 		])->get();
 
-		return AcademicActivityResource::collection($academicActivity);
- 	}
+		return GroupResource::collection($response);
+	}
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ModuleResource;
 use App\Models\GroupModule;
 use App\Models\Module;
 use App\Models\ModuleInstructor;
@@ -15,28 +16,18 @@ use Illuminate\Support\Facades\DB;
  */
 class ModuleService
 {
-	// constructor
-	protected GroupModule $GroupModule;
 	protected Module $Module;
-	protected ModuleInstructor $ModuleInstructor;
-	protected ModuleTheme $ModuleTheme;
-	protected SubTheme $SubTheme;
+	protected GroupModule $GroupModule;
 	protected Theme $Theme;
-
-	public function __construct(Module $Module, GroupModule $GroupModule, ModuleInstructor $ModuleInstructor, Theme $Theme, SubTheme $SubTheme, ModuleTheme $ModuleTheme)
-	{
-		$this->GroupModule = $GroupModule;
-		$this->Module = $Module;
-		$this->ModuleInstructor = $ModuleInstructor;
-		$this->ModuleTheme = $ModuleTheme;
-		$this->SubTheme = $SubTheme;
-		$this->Theme = $Theme;
-	}
+	protected SubTheme $SubTheme;
 	public function index()
 	{
-		return [
-			'modules' => Module::all()
-		];
+		$response = Module::with([
+			'instructor',
+			'themes.sub_theme'
+		])->get();
+
+		return ModuleResource::collection($response);
 	}
 
 	public function updateOrCreateModules(array $DataModule)

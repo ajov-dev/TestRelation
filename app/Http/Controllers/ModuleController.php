@@ -9,28 +9,35 @@ use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
-    private ModuleService $ModuleService;
-	private Module $module;
+	protected Module $Module;
+	protected ModuleService $ModuleService;
 
-    public function __construct(ModuleService $ModuleService, Module $module)
-    {
-        $this->ModuleService = $ModuleService;
-		$this->module = $module;
-    }
+	public function __construct(Module $Module, ModuleService $ModuleService)
+	{
+		$this->Module = $Module;
+		$this->ModuleService = $ModuleService;
+	}
+
+	public function index()
+	{
+		return $this->ModuleService->index();
+	}
+
 	public function store(Request $request)
 	{
 		$units = $request->input('units');
-
 
 		foreach ($units as $unit) {
 			$unit['created_by'] = 'admin';
 			$unit['updated_by'] = 'admin';
 			$unit['group_id'] = $request->input('group_id');
-			$this->ModuleService->updateOrCreateModule($unit);
+			$this->ModuleService->updateOrCreateModules($unit);
 		}
 
-		return Group::with(['modules' => function ($q) {
-			$q->with(['instructor', 'themes.sub_theme']);
-		}])->find($request->input('group_id'));
+		return Group::with([
+			'modules' => function ($q) {
+				$q->with(['instructor', 'themes.sub_theme']);
+			}
+		])->find($request->input('group_id'));
 	}
 }

@@ -24,4 +24,4 @@ Route::apiResource('modules', ModuleController::class);
 
 route::apiResource('themes', ThemeController::class);
 
-route::apiResource('subthemes', SubThemeController::class);
+route::apiResource('sub_theme', SubThemeController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\SubThemeResource;
 use App\Models\SubTheme;
 use App\Models\Theme;
 use Exception;
@@ -20,12 +21,12 @@ class SubThemeService
 
     }
 
-    public function index(): array
-    {
-        return [
-            'subThemes' => $this->subTheme::all(),
-        ];
-    }
+	public function index()
+	{
+		$response = SubTheme::get();
+
+		return SubThemeResource::collection($response);
+	}
 
     public function storeSubTheme(array $arraySubTheme, int $themeID): array
     {
