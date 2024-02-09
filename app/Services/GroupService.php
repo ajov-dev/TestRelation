@@ -2,15 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Group;
-use App\Models\GroupModule;
-use App\Models\Module;
-use App\Models\ModuleInstructor;
-use App\Models\ModuleTheme;
-use App\Models\SubTheme;
 use App\Models\AcademicActivity;
-use App\Services\ModuleService;
+use App\Models\Group;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\AcademicActivityResource;
 
 /**
  * Class GroupService.
@@ -21,8 +16,8 @@ class GroupService
 	public const create_by = 'admin';
 	public const update_by = 'admin';
 
-	protected $group;
-	protected $ModuleService;
+	protected Group $group;
+	protected ModuleService $ModuleService;
 
 	public function __construct(Group $group, ModuleService $ModuleService)
 	{
@@ -32,19 +27,23 @@ class GroupService
 
 	public function index()
 	{
-		return [
-			'academic_activity_id' => AcademicActivity::with([
-				'groups' => function ($q){
-					$q->with([
-						'modules' => function ($q){
-							$q->with([
-								'instructor', 'themes.sub_theme']);
-						}
-					]);
-				}
-			])->find(1),
-		];
-	}
+		$academicActivity  = AcademicActivity::with([
+			'groups' => function ($q) {
+				$q->with([
+					'modules' => function ($q) {
+						$q->with([
+							'instructor',
+							'themes.sub_theme',
+						]);
+					}
+				]);
+			}
+		])->get();
+
+		return AcademicActivityResource::collection($academicActivity);
+ 	}
+
+
 
 	public function storeGroups(array $data): void
 	{
