@@ -28,7 +28,7 @@ class GroupService
 		$response = $this->group->with([
 			'modules' => function ($q) {
 				$q->with([
-					'instructor',
+					'instructors',
 					'themes.sub_theme'
 				]);
 			}
@@ -43,8 +43,30 @@ class GroupService
 			$this->ModuleService->destroyModules($data);
 			foreach ($data['data'] as $ModuleData) {
 				$ModuleData['group_id'] = $group['id'];
+				$ModuleData['created_by'] = 'admin';
+				$ModuleData['updated_by'] = 'admin';
 				$this->ModuleService->updateOrCreateModules($ModuleData);
 			}
+		});
+	}
+
+	public function destroy(Group $groups)
+	{
+		return DB::transaction(function () use ($groups) {
+			$groups->modules->each(function ($module) {
+				$module->themes->each(function ($theme) {
+					$theme->sub_theme()->delete();
+				});
+				$module->themes()->detach();
+				$module->instructors()->detach();
+
+			});
+
+			$groups->modules()->detach();
+
+			$groups->delete();
+
+			return $this->index();
 		});
 	}
 }

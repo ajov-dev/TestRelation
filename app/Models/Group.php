@@ -36,4 +36,14 @@ class Group extends Model
 		->using(GroupModule::class)
 		->withPivot('id');
 	}
+
+	// public function modules()
+	// {
+	// 	return $this->belongsToMany(
+	// 		Module::class,
+	// 		'group_module',
+	// 		'group_id',
+	// 		'module_id',
+	// 	);
+	// }
 }

@@ -22,6 +22,6 @@ Route::apiResource('groups',GroupController::class);
 
 Route::apiResource('modules', ModuleController::class);
 
-route::apiResource('themes', ThemeController::class);
+Route::apiResource('themes', ThemeController::class);
 
-route::apiResource('sub_theme', SubThemeController::class);
+Route::apiResource('sub_theme', SubThemeController::class);

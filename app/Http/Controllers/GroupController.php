@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GroupModule;
-use App\Models\ModuleInstructor;
-use App\Models\ModuleTheme;
 use App\Services\GroupService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use Exception;
@@ -26,12 +24,16 @@ class GroupController extends Controller
 
 	public function store(Request $request)
 	{
-		//return $request->input();
 		try {
 			$this->groupService->store($request->input());
 			return $this->index();
 		} catch (Exception $e) {
 			return response()->json(['data' => ['message' => $e->getMessage()]], 500);
 		}
+	}
+
+	public function destroy(Group $Group)
+	{
+		return new JsonResponse($this->groupService->destroy($Group));
 	}
 }

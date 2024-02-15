@@ -28,12 +28,17 @@ class Module extends Model
 		'updated_by',
 	];
 
+	// public function themes()
+	// {
+	// 	return $this->belongsToMany(Theme::class, ModuleTheme::class);
+	// }
+
 	public function themes()
 	{
 		return $this->belongsToMany(Theme::class, ModuleTheme::class);
 	}
 
-    public function instructor()
+    public function instructors()
     {
         return $this->belongsToMany(Instructor::class, ModuleInstructor::class);
     }
