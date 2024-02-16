@@ -79,10 +79,10 @@ class ModuleService
 
 	public function destroyModules($data): void
 	{
-		$modules = collect($data['data'])->pluck('id')->toArray();
-		DB::transaction(function () use ($modules, $data) {
+		$id_to_delete = collect($data['data'])->pluck('id')->toArray();
+		DB::transaction(function () use ($id_to_delete, $data) {
 			$groupsModules = GroupModule::where('group_id', $data['id'])
-				->whereNotIn('module_id', $modules)
+				->whereNotIn('module_id', $id_to_delete)
 				->get();
 			$groupsModules->each(function ($groupModule) {
 				$moduleThemes = ModuleTheme::where('module_id', $groupModule->id)->get();

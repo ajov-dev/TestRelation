@@ -57,10 +57,10 @@ class ThemeService
 
 	public function destroyThemes($data): void
 	{
-		$themes = collect($data['themes'])->pluck('id')->toArray();
-		DB::transaction(function () use ($themes, $data) {
+		$id_to_delete = collect($data['themes'])->pluck('id')->toArray();
+		DB::transaction(function () use ($id_to_delete, $data) {
 			$ModuleThemes = ModuleTheme::where('module_id', $data['id'])
-				->whereNotIn('theme_id', $themes)
+				->whereNotIn('theme_id', $id_to_delete)
 				->get();
 			$ModuleThemes->each(function ($ModuleTheme) {
 				SubTheme::destroy('theme_id', $ModuleTheme->id);

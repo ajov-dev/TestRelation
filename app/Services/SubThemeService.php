@@ -21,20 +21,20 @@ class SubThemeService
 		$response = SubTheme::get();
 		return SubThemeResource::collection($response);
 	}
-	public function updateOrCreateSubThemes(array $DST): void
+	public function updateOrCreateSubThemes(array $DataSubTheme): void
 	{
-		DB::transaction(function () use ($DST) {
-			$this->SubTheme = isset($DST['id'])
-				? SubTheme::updateOrCreate(['theme_id' => $DST['id']], $DST)
-				: SubTheme::create($DST);
+		DB::transaction(function () use ($DataSubTheme) {
+			$this->SubTheme = isset($DataSubTheme['id'])
+				? SubTheme::updateOrCreate(['theme_id' => $DataSubTheme['id']], $DataSubTheme)
+				: SubTheme::create($DataSubTheme);
 		});
 	}
 	public function destroySubThemes($data): void
 	{
-		$themes = collect($data['sub_themes'])->pluck('id')->toArray();
-		DB::transaction(function () use ($themes, $data) {
+		$id_to_delete = collect($data['sub_themes'])->pluck('id')->toArray();
+		DB::transaction(function () use ($id_to_delete, $data) {
 			$ModuleThemes = SubTheme::where('theme_id', $data['id'])
-				->whereNotIn('theme_id', $themes)
+				->whereNotIn('theme_id', $id_to_delete)
 				->get();
 			$ModuleThemes->each(function ($ModuleTheme) {
 				SubTheme::destroy('theme_id', $ModuleTheme->id);
