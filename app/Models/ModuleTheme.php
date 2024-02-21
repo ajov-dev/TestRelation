@@ -14,7 +14,7 @@ class ModuleTheme extends Pivot
 
 	protected $table = 'module_theme';
 	protected $fillable = [
-		'module',
+		'module_id',
 		'theme_id',
 		'created_by',
 		'updated_by',
