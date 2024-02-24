@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
 		$this->call(InstructorSeeder::class);
 		$this->call(ThemeSeeder::class);
 
-		$this->call(GroupModuleSeeder::class);
-		$this->call(ModuleThemeSeeder::class);
-		$this->call(ModuleInstructorSeeder::class);
-		$this->call(SubThemeSeeder::class);
+		// $this->call(GroupModuleSeeder::class);
+		// $this->call(ModuleThemeSeeder::class);
+		// $this->call(ModuleInstructorSeeder::class);
+		// $this->call(SubThemeSeeder::class);
 
 	}
 }

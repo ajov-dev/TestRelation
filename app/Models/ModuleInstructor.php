@@ -21,7 +21,7 @@ class ModuleInstructor extends Pivot
 		'updated_by',
 	];
 	protected $hidden = [
-		'pivot',
+		
 		'created_at',
 		'updated_at',
 		'created_by',

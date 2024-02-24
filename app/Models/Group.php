@@ -23,7 +23,7 @@ class Group extends Model
 	];
 
 	protected $hidden = [
-		'pivot',
+
 		'created_at',
 		'updated_at',
 		'created_by',
@@ -32,18 +32,20 @@ class Group extends Model
 
 	public function modules()
 	{
-		return $this->belongsToMany(Module::class, 'group_module')
-		->using(GroupModule::class)
-		->withPivot('id');
+		return $this->belongsToMany(Module::class, GroupModule::class)
+		->withPivot('id as modules_id');
 	}
 
-	// public function modules()
-	// {
-	// 	return $this->belongsToMany(
-	// 		Module::class,
-	// 		'group_module',
-	// 		'group_id',
-	// 		'module_id',
-	// 	);
-	// }
+	public function group_modules()
+	{
+		return $this->hasMany(GroupModule::class);
+	}
+
+	// belongs to many -> Groups->modules
+	// primer parametro: modelo con el que se relaciona
+	// segundo parametro: tabla intermedia
+	// tercer parametro: llave foranea del modelo actual
+	// cuarto parametro: llave foranea del modelo con el que se relaciona
+
+	// el tercer parametro dice que la llave foranea de este modelo es group_id y ahi es donde estara el id del modelo actual.
 }

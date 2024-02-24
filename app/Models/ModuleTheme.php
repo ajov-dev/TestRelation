@@ -20,10 +20,21 @@ class ModuleTheme extends Pivot
 		'updated_by',
 	];
 	protected $hidden = [
-		'pivot',
+
 		'created_at',
 		'updated_at',
 		'created_by',
 		'updated_by',
 	];
+
+	public function themes()
+	{
+		return $this->hasMany(Theme::class, 'id', 'theme_id');
+	}
+
+	public function sub_themes()
+	{
+		return $this->hasMany(subTheme::class, 'themes_id');
+	}
+
 }

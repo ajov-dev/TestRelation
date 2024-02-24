@@ -7,18 +7,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ModuleResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
-    {
-        return [
+	public function toArray(Request $request): array
+	{
+		return [
 			'id' => $this->id,
 			'descripcion' => $this->description,
-			'instructor_id' => $this->instructors[0]->id,
-			'themes' => ThemeResource::collection($this->themes),
+			// 'themes' => ThemeResource::collection(collect($this->module_themes)->pluck('themes')->flatten()),
+			'themes' => $this->module_themes,
 		];
-    }
+	}
 }

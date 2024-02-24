@@ -21,26 +21,24 @@ class Module extends Model
 		'updated_by',
 	];
 	protected $hidden = [
-		'pivot',
+
 		'created_at',
 		'updated_at',
 		'created_by',
 		'updated_by',
 	];
-
 	// public function themes()
 	// {
-	// 	return $this->belongsToMany(Theme::class, ModuleTheme::class);
+	// 	return $this->hasManyThrough(GroupModule::class, ModuleTheme::class, 'track1', 'track2');
+	// // }
+
+	// public function module_themes()
+	// {
+	// 	return $this->hasManyThrough(ModuleTheme::class, GroupModule::class, 'module_id', 'modules_id');
 	// }
 
-	public function themes()
+	public function group_modules()
 	{
-		return $this->belongsToMany(Theme::class, ModuleTheme::class);
+		return $this->hasMany(GroupModule::class, 'module_id');
 	}
-
-    public function instructors()
-    {
-        return $this->belongsToMany(Instructor::class, ModuleInstructor::class);
-    }
-
 }

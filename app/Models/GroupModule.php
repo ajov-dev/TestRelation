@@ -20,10 +20,26 @@ class GroupModule extends pivot
 		'updated_by'
 	];
 	protected $hidden = [
-		'pivot',
+
 		'created_at',
 		'updated_at',
 		'created_by',
 		'updated_by',
 	];
+	public function modules()
+	{
+		return $this->belongsToMany(Module::class);
+	}
+	public function groups()
+	{
+		return $this->belongsToMany(Group::class);
+	}
+	public function module_themes()
+	{
+		return $this->hasMany(ModuleTheme::class, 'modules_id');
+	}
+	public function module_instructors()
+	{
+		return $this->belongsToMany(ModuleInstructor::class);
+	}
 }

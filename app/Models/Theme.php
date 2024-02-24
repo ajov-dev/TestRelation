@@ -16,6 +16,7 @@ class Theme extends Model
 {
 	use HasFactory;
 	protected $table = 'themes';
+	protected $primaryKey = 'id';
 	protected $fillable = [
 		'description',
 		'created_by',
@@ -27,11 +28,6 @@ class Theme extends Model
 		'updated_by',
 		'created_at',
 		'updated_at',
-		'pivot'
 	];
 
-	public function sub_theme()
-	{
-		return $this->hasMany(SubTheme::class, 'theme_id');
-	}
 }

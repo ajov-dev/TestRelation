@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GroupResource extends JsonResource
+class GroupModuleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,6 @@ class GroupResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-			'id' => $this->id,
-			'descripcion' => $this->description,
-			'modules' => ModuleResource::collection($this->modules),
-		];
+        return [ThemeResource::collection($this->themes)];
     }
 }

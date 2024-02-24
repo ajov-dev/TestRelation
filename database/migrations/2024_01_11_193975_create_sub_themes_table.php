@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('description');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->foreignId('theme_id')->constrained('module_theme')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('themes_id')->constrained('module_theme')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

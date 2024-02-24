@@ -22,7 +22,7 @@ class SubTheme extends Pivot
 	];
 
 	protected $hidden = [
-		'pivot',
+		
 		'created_at',
 		'updated_at',
 		'created_by',
