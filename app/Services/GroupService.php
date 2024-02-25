@@ -32,8 +32,8 @@ class GroupService
 				}]);
 			},
 		])->get();
-		// return GroupResource::collection($response);
-		return $response;
+		return GroupResource::collection($response);
+		// return $response;
 	}
 	public function store(array $data): void
 	{

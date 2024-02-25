@@ -16,7 +16,7 @@ class GroupResource extends JsonResource
     {
         return [
 			'id' => $this->id,
-			'descripcion' => $this->description,
+			'description' => $this->description,
 			'modules' => ModuleResource::collection($this->modules),
 		];
     }
