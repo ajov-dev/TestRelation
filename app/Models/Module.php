@@ -33,4 +33,10 @@ class Module extends Model
 		return $this->hasMany(GroupModule::class)
 		->with('themes');
 	}
+
+	public function instructors()
+	{
+		return $this->hasMany(GroupModule::class)
+		->with('instructors');
+	}
 }

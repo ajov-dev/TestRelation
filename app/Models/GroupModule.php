@@ -48,4 +48,9 @@ class GroupModule extends pivot
 		return $this->belongsToMany(Theme::class, 'module_theme', 'modules_id', 'theme_id')
 			->with('sub_themes');
 	}
+
+	public function instructors()
+	{
+		return $this->belongsToMany(Instructor::class, 'module_instructor', 'modules_id', 'instructor_id');
+	}
 }
