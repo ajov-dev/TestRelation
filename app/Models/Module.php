@@ -27,18 +27,10 @@ class Module extends Model
 		'created_by',
 		'updated_by',
 	];
-	// public function themes()
-	// {
-	// 	return $this->hasManyThrough(GroupModule::class, ModuleTheme::class, 'track1', 'track2');
-	// // }
 
-	// public function module_themes()
-	// {
-	// 	return $this->hasManyThrough(ModuleTheme::class, GroupModule::class, 'module_id', 'modules_id');
-	// }
-
-	public function group_modules()
+	public function themes()
 	{
-		return $this->hasMany(GroupModule::class, 'module_id');
+		return $this->hasMany(GroupModule::class)
+		->with('themes');
 	}
 }

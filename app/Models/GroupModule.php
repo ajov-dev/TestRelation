@@ -26,20 +26,26 @@ class GroupModule extends pivot
 		'created_by',
 		'updated_by',
 	];
-	public function modules()
+	// public function modules()
+	// {
+	// 	return $this->belongsToMany(Module::class);
+	// }
+	// public function groups()
+	// {
+	// 	return $this->belongsToMany(Group::class);
+	// }
+	// public function module_themes()
+	// {
+	// 	return $this->hasMany(ModuleTheme::class, 'modules_id');
+	// }
+	// public function module_instructors()
+	// {
+	// 	return $this->belongsToMany(Instructor::class, ModuleInstructor::class, 'modules_id', 'instructor_id');
+	// }
+
+	public function themes()
 	{
-		return $this->belongsToMany(Module::class);
-	}
-	public function groups()
-	{
-		return $this->belongsToMany(Group::class);
-	}
-	public function module_themes()
-	{
-		return $this->hasMany(ModuleTheme::class, 'modules_id');
-	}
-	public function module_instructors()
-	{
-		return $this->belongsToMany(Instructor::class, ModuleInstructor::class, 'modules_id', 'instructor_id');
+		return $this->belongsToMany(Theme::class, 'module_theme', 'modules_id', 'theme_id')
+			->with('sub_themes');
 	}
 }

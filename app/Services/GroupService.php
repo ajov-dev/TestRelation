@@ -26,11 +26,7 @@ class GroupService
 	public function index()
 	{
 		$response = $this->group->with([
-			'modules.group_modules' => function ($q){
-				$q->with(['module_instructors', 'module_themes'=>function($q){
-					$q->with(['themes', 'sub_themes']);
-				}]);
-			},
+			'modules.themes'
 		])->get();
 		// return GroupResource::collection($response);
 		return $response;

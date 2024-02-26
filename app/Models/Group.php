@@ -33,19 +33,11 @@ class Group extends Model
 	public function modules()
 	{
 		return $this->belongsToMany(Module::class, GroupModule::class)
-		->withPivot('id as modules_id');
+			->withPivot('id as modules_id');
 	}
 
 	public function group_modules()
 	{
 		return $this->hasMany(GroupModule::class);
 	}
-
-	// belongs to many -> Groups->modules
-	// primer parametro: modelo con el que se relaciona
-	// segundo parametro: tabla intermedia
-	// tercer parametro: llave foranea del modelo actual
-	// cuarto parametro: llave foranea del modelo con el que se relaciona
-
-	// el tercer parametro dice que la llave foranea de este modelo es group_id y ahi es donde estara el id del modelo actual.
 }

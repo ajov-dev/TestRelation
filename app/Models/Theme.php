@@ -30,4 +30,9 @@ class Theme extends Model
 		'updated_at',
 	];
 
+	public function sub_themes()
+	{
+		return $this->hasMany(ModuleTheme::class)
+			->with('sub_themes');
+	}
 }
