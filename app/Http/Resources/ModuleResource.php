@@ -27,7 +27,8 @@ class ModuleResource extends JsonResource
         return [
             'id' => $this->id,
             'description' => $this->description,
-            'group_modules' => $array['themes'],
+			'instructor_id' => 'not yet implemented',
+            'themes' => $array['themes'],
         ];
     }
 }

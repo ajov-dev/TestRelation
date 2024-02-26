@@ -27,13 +27,13 @@ class GroupService
 	{
 		$response = $this->group->with([
 			'modules.group_modules' => function ($q){
-				$q->with(['module_themes'=>function($q){
+				$q->with(['module_instructors', 'module_themes'=>function($q){
 					$q->with(['themes', 'sub_themes']);
 				}]);
 			},
 		])->get();
-		return GroupResource::collection($response);
-		// return $response;
+		// return GroupResource::collection($response);
+		return $response;
 	}
 	public function store(array $data): void
 	{

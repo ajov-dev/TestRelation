@@ -40,6 +40,6 @@ class GroupModule extends pivot
 	}
 	public function module_instructors()
 	{
-		return $this->belongsToMany(ModuleInstructor::class);
+		return $this->belongsToMany(Instructor::class, ModuleInstructor::class, 'modules_id', 'instructor_id');
 	}
 }
