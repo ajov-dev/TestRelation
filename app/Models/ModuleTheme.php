@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
+
 
 /**
  * @method static create(array $array)
  */
-class ModuleTheme extends Pivot
+class ModuleTheme extends Model
 {
 	use HasFactory;
 
 	protected $table = 'module_theme';
 	protected $fillable = [
-		'module_id',
+		'modules_id',
 		'theme_id',
 		'created_by',
 		'updated_by',

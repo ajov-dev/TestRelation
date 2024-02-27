@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+
 /**
  * @method static create(array $array)
  */
-class GroupModule extends pivot
+class GroupModule extends Model
 {
 	use HasFactory;
 

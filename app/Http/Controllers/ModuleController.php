@@ -34,10 +34,12 @@ class ModuleController extends Controller
 			$this->ModuleService->updateOrCreateModules($unit);
 		}
 
-		return Group::with([
+		$response = Group::with([
 			'modules' => function ($q) {
-				$q->with(['instructors', 'themes.sub_theme']);
+				$q->with(['instructors', 'themes']);
 			}
 		])->find($request->input('group_id'));
+
+		return collect($response->modules);
 	}
 }
