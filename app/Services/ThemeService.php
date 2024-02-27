@@ -31,26 +31,26 @@ class ThemeService
 		return ThemeResource::collection($response);
 	}
 
-	public function updateOrCreateThemes(array $Datathemes)
+	public function updateOrCreateThemes(array $req)
 	{
-		$this->Theme = isset($Datathemes['id'])
-			? Theme::updateOrCreate(['id' => $Datathemes['id']], $Datathemes)
-			: Theme::create($Datathemes);
-		$Datathemes['theme_id'] = $this->Theme['id'];
+		$this->Theme = isset($req['id'])
+			? Theme::updateOrCreate(['id' => $req['id']], $req)
+			: Theme::create($req);
 
+		$req['themes_id'] = $this->Theme['id'];
 
 		$ModuleTheme = ModuleTheme::updateOrCreate([
-			'module_id' => $Datathemes['module_id'],
+			'modules_id' => $req['modules_id'],
 			'theme_id' => $this->Theme['id']
 		]);
 
-		if (isset($Datathemes['sub_themes'])) {
-			//$this->subThemeService->destroySubThemes($Datathemes);
-			foreach ($Datathemes['sub_themes'] as $DataSubTheme) {
-				$DataSubTheme['theme_id'] = $ModuleTheme['id'];
-				$DataSubTheme['created_by'] = $Datathemes['created_by'];
-				$DataSubTheme['updated_by'] = $Datathemes['updated_by'];
-				$this->subThemeService->updateOrCreateSubThemes($DataSubTheme);
+		if (isset($req['sub_themes'])) {
+			//$this->subThemeService->destroySubThemes($req);
+			foreach ($req['sub_themes'] as $data) {
+				$data['themes_id'] = $ModuleTheme['id'];
+				$data['created_by'] = $req['created_by'];
+				$data['updated_by'] = $req['updated_by'];
+				$this->subThemeService->updateOrCreateSubThemes($data);
 			}
 		}
 	}

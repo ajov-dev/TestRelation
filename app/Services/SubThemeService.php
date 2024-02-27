@@ -25,7 +25,7 @@ class SubThemeService
 	{
 		DB::transaction(function () use ($DataSubTheme) {
 			$this->SubTheme = isset($DataSubTheme['id'])
-				? SubTheme::updateOrCreate(['theme_id' => $DataSubTheme['id']], $DataSubTheme)
+				? SubTheme::updateOrCreate(['themes_id' => $DataSubTheme['id']], $DataSubTheme)
 				: SubTheme::create($DataSubTheme);
 		});
 	}
