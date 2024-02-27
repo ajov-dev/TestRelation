@@ -33,39 +33,45 @@ class ThemeService
 
 	public function updateOrCreateThemes(array $req)
 	{
-		$this->Theme = isset($req['id'])
+		$Theme = isset($req['id'])
 			? Theme::updateOrCreate(['id' => $req['id']], $req)
 			: Theme::create($req);
 
-		$req['themes_id'] = $this->Theme['id'];
+		$req['theme_id'] = $Theme['id'];
 
 		$ModuleTheme = ModuleTheme::updateOrCreate([
 			'modules_id' => $req['modules_id'],
-			'theme_id' => $this->Theme['id']
+			'theme_id' => $Theme['id']
 		]);
 
+		$req['themes_id'] = $ModuleTheme->id;
+
 		if (isset($req['sub_themes'])) {
-			//$this->subThemeService->destroySubThemes($req);
+			$req['whereNotIn'] = collect($req['sub_themes'])->pluck('id');
+			$this->subThemeService->destroySubThemes($req);
 			foreach ($req['sub_themes'] as $data) {
-				$data['themes_id'] = $ModuleTheme['id'];
+				$data['themes_id'] = $req['themes_id'];
 				$data['created_by'] = $req['created_by'];
 				$data['updated_by'] = $req['updated_by'];
 				$this->subThemeService->updateOrCreateSubThemes($data);
 			}
+		} else {
+			$this->subThemeService->destroySubThemes($req);
 		}
 	}
 
-	public function destroyThemes($data): void
-	{
-		$id_to_delete = collect($data['themes'])->pluck('id')->toArray();
-		DB::transaction(function () use ($id_to_delete, $data) {
-			$ModuleThemes = ModuleTheme::where('module_id', $data['id'])
-				->whereNotIn('theme_id', $id_to_delete)
-				->get();
-			$ModuleThemes->each(function ($ModuleTheme) {
-				SubTheme::destroy('theme_id', $ModuleTheme->id);
-				ModuleTheme::destroy($ModuleTheme->id);
-			});
-		});
-	}
+	// public function destroyThemes($data): void
+	// {
+	// 	$whereNotIn = collect($data['themes'])->pluck('id');
+
+	// 	DB::transaction(function () use ($whereNotIn, $data) {
+	// 		$ModuleThemes = ModuleTheme::where('modules_id', $data['id'])
+	// 			->whereNotIn('theme_id', $whereNotIn)
+	// 			->get();
+	// 		$ModuleThemes->each(function ($ModuleTheme) {
+	// 			SubTheme::destroy('themes_id', $ModuleTheme->id);
+	// 			ModuleTheme::destroy($ModuleTheme->id);
+	// 		});
+	// 	});
+	// }
 }

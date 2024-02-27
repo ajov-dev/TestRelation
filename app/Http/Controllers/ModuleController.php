@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ModuleResource;
 use App\Models\Module;
 use App\Models\Group;
 use App\Services\ModuleService;
@@ -34,12 +35,8 @@ class ModuleController extends Controller
 			$this->ModuleService->updateOrCreateModules($unit);
 		}
 
-		$response = Group::with([
-			'modules' => function ($q) {
-				$q->with(['instructors', 'themes']);
-			}
-		])->find($request->input('group_id'));
-
-		return collect($response->modules);
+		$response = Module::with(['instructors', 'themes'])->get();
+		return ModuleResource::collection($response);
+		// return ModuleResource::collection
 	}
 }
