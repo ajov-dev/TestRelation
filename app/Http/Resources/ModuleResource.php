@@ -9,26 +9,11 @@ class ModuleResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // $response
-        $module_themes = collect($this->group_modules)->pluck('module_themes')->flatten();
-
-		$themes = collect($module_themes)->pluck('themes')->flatten()->flatten();
-		$sub_themes = collect($module_themes)->pluck('sub_themes')->flatten();
-
-		$array = [];
-		$array =[
-			'themes' => [
-				'id' =>$themes[0]->id,
-				'description' => $themes[0]->description,
-				'sub_themes' => $sub_themes
-			]
+		return [
+			'id' => $this->id,
+			'description' => $this->description,
+			'instructor_id' => collect($this->instructors)->pluck('instructors')->flatten()->value('id'),
+			'themes' => ThemeResource::collection(collect($this->themes)->pluck('themes')->flatten())
 		];
-
-        return [
-            'id' => $this->id,
-            'description' => $this->description,
-			'instructor_id' => 'not yet implemented',
-            'themes' => $array['themes'],
-        ];
     }
 }

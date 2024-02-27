@@ -18,7 +18,7 @@ class ThemeResource extends JsonResource
 			'id' => $this->id,
 			'descripcion' => $this->description,
 			// 'sub_themes' => SubThemeResource::collection($this->sub_themes),
-			'sub_themes' => $this->sub_themes,
+			'sub_themes' => SubThemeResource::collection(collect($this->sub_themes)->pluck('sub_themes')->flatten()),
 
 		];
 	}
