@@ -42,13 +42,16 @@ class ModuleService
 			ModuleInstructor::updateOrCreate(['modules_id' => $req['modules_id']], $req);
 
 			if (isset($req['themes'])) {
-				//$ServiceTheme->destroyThemes($req); // destroy themes
-				foreach ($req['themes'] as $data) {
-					$data['created_by'] = $req['created_by'];
-					$data['updated_by'] = $req['updated_by'];
-					$data['modules_id'] = $req['modules_id'];
-					$this->ServiceTheme->updateOrCreateThemes($data);
-				}
+				$req['whereNotIn'] = collect($req['themes'])->pluck('id');
+				$this->ServiceTheme->destroyThemes($req); // destroy themes
+				// foreach ($req['themes'] as $data) {
+				// 	$data['created_by'] = $req['created_by'];
+				// 	$data['updated_by'] = $req['updated_by'];
+				// 	$data['modules_id'] = $req['modules_id'];
+				// 	$this->ServiceTheme->updateOrCreateThemes($data);
+				// }
+			}else{
+				$this->ServiceTheme->destroyThemes($req); // destroy themes
 			}
 		});
 	}

@@ -60,18 +60,19 @@ class ThemeService
 		}
 	}
 
-	// public function destroyThemes($data): void
-	// {
-	// 	$whereNotIn = collect($data['themes'])->pluck('id');
+	public function destroyThemes($data)
+	{
 
-	// 	DB::transaction(function () use ($whereNotIn, $data) {
-	// 		$ModuleThemes = ModuleTheme::where('modules_id', $data['id'])
-	// 			->whereNotIn('theme_id', $whereNotIn)
-	// 			->get();
-	// 		$ModuleThemes->each(function ($ModuleTheme) {
-	// 			SubTheme::destroy('themes_id', $ModuleTheme->id);
-	// 			ModuleTheme::destroy($ModuleTheme->id);
-	// 		});
-	// 	});
-	// }
+		return DB::transaction(function () use ($data) {
+			$ModuleThemes = isset($req['whereNotIn'])
+			? ModuleTheme::where('modules_id', $data['modules_id'])->whereNotIn('theme_id', $data['whereNotIn'])->get()
+			: ModuleTheme::where('modules_id', $data['modules_id'])->get();
+
+			// $ModuleThemes->each(function ($ModuleTheme) {
+			// 	SubTheme::destroy('themes_id', $ModuleTheme->id);
+			// 	ModuleTheme::destroy($ModuleTheme->id);
+			// });
+			return dd($data);
+		});
+	}
 }
