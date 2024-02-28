@@ -15,7 +15,7 @@ class ModuleTheme extends Model
 
 	protected $table = 'module_theme';
 	protected $fillable = [
-		'modules_id',
+		'module_id',
 		'theme_id',
 		'created_by',
 		'updated_by',
@@ -35,7 +35,7 @@ class ModuleTheme extends Model
 
 	public function sub_themes()
 	{
-		return $this->hasMany(subTheme::class, 'themes_id');
+		return $this->hasMany(subTheme::class, 'theme_id');
 	}
 
 }

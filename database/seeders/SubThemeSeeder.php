@@ -15,42 +15,42 @@ class SubThemeSeeder extends Seeder
 	{
 
 		SubTheme::create([
-			'themes_id' => 1, // Default
+			'theme_id' => 1, // Default
 			'description' => 'Sub_theme #1',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'themes_id' => 1, // Default
+			'theme_id' => 1, // Default
 			'description' => 'Sub_theme #2',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'themes_id' => 2, // Default
+			'theme_id' => 2, // Default
 			'description' => 'Sub_theme #3',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'themes_id' => 2, // Default
+			'theme_id' => 2, // Default
 			'description' => 'Sub_theme #4',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'themes_id' => 3, // Default
+			'theme_id' => 3, // Default
 			'description' => 'Sub_theme #5',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',
 		]);
 
 		SubTheme::create([
-			'themes_id' => 3, // Default
+			'theme_id' => 3, // Default
 			'description' => 'Sub_theme #6',
 			'created_by' => 'admin',
 			'updated_by' => 'admin',

@@ -40,17 +40,17 @@ class ThemeService
 		$req['theme_id'] = $Theme['id'];
 
 		$ModuleTheme = ModuleTheme::updateOrCreate([
-			'modules_id' => $req['modules_id'],
+			'module_id' => $req['module_id'],
 			'theme_id' => $Theme['id']
 		]);
 
-		$req['themes_id'] = $ModuleTheme->id;
+		$req['theme_id'] = $ModuleTheme->id;
 
 		if (isset($req['sub_themes'])) {
 			$req['whereNotIn'] = collect($req['sub_themes'])->pluck('id');
 			$this->subThemeService->destroySubThemes($req);
 			foreach ($req['sub_themes'] as $data) {
-				$data['themes_id'] = $req['themes_id'];
+				$data['theme_id'] = $req['theme_id'];
 				$data['created_by'] = $req['created_by'];
 				$data['updated_by'] = $req['updated_by'];
 				$this->subThemeService->updateOrCreateSubThemes($data);
@@ -65,11 +65,11 @@ class ThemeService
 
 		return DB::transaction(function () use ($data) {
 			$ModuleThemes = isset($req['whereNotIn'])
-			? ModuleTheme::where('modules_id', $data['modules_id'])->whereNotIn('theme_id', $data['whereNotIn'])->get()
-			: ModuleTheme::where('modules_id', $data['modules_id'])->get();
+			? ModuleTheme::where('module_id', $data['module_id'])->whereNotIn('theme_id', $data['whereNotIn'])->get()
+			: ModuleTheme::where('module_id', $data['module_id'])->get();
 
 			// $ModuleThemes->each(function ($ModuleTheme) {
-			// 	SubTheme::destroy('themes_id', $ModuleTheme->id);
+			// 	SubTheme::destroy('theme_id', $ModuleTheme->id);
 			// 	ModuleTheme::destroy($ModuleTheme->id);
 			// });
 			return dd($data);

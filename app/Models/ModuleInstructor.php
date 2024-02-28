@@ -16,7 +16,7 @@ class ModuleInstructor extends Model
 	protected $table = 'module_instructor';
 
 	protected $fillable = [
-		'modules_id',
+		'module_id',
 		'instructor_id',
 		'created_by',
 		'updated_by',

@@ -33,7 +33,7 @@ class Group extends Model
 	public function modules()
 	{
 		return $this->belongsToMany(Module::class, GroupModule::class)
-			->withPivot('id as modules_id');
+			->withPivot('id as module_id');
 	}
 
 	public function group_modules()

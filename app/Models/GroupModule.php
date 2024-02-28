@@ -36,21 +36,21 @@ class GroupModule extends Model
 	// }
 	// public function module_themes()
 	// {
-	// 	return $this->hasMany(ModuleTheme::class, 'modules_id');
+	// 	return $this->hasMany(ModuleTheme::class, 'module_id');
 	// }
 	// public function module_instructors()
 	// {
-	// 	return $this->belongsToMany(Instructor::class, ModuleInstructor::class, 'modules_id', 'instructor_id');
+	// 	return $this->belongsToMany(Instructor::class, ModuleInstructor::class, 'module_id', 'instructor_id');
 	// }
 
 	public function themes()
 	{
-		return $this->belongsToMany(Theme::class, 'module_theme', 'modules_id', 'theme_id')
+		return $this->belongsToMany(Theme::class, 'module_theme', 'module_id', 'theme_id')
 			->with('sub_themes');
 	}
 
 	public function instructors()
 	{
-		return $this->belongsToMany(Instructor::class, 'module_instructor', 'modules_id', 'instructor_id');
+		return $this->belongsToMany(Instructor::class, 'module_instructor', 'module_id', 'instructor_id');
 	}
 }

@@ -25,7 +25,7 @@ class SubThemeService
 	{
 		DB::transaction(function () use ($DataSubTheme) {
 			isset($DataSubTheme['id'])
-				? SubTheme::updateOrCreate(['themes_id' => $DataSubTheme['id']], $DataSubTheme)
+				? SubTheme::updateOrCreate(['theme_id' => $DataSubTheme['id']], $DataSubTheme)
 				: SubTheme::create($DataSubTheme);
 		});
 	}
@@ -33,8 +33,8 @@ class SubThemeService
 	{
 		DB::transaction(function () use ( $data ) {
 			isset($req['whereNotIn'])
-			? SubTheme::where('themes_id', $data['themes_id'])->whereNotIn('id', $data['whereNotIn'])->delete()
-			: SubTheme::where('themes_id', $data['themes_id'])->delete();
+			? SubTheme::where('theme_id', $data['theme_id'])->whereNotIn('id', $data['whereNotIn'])->delete()
+			: SubTheme::where('theme_id', $data['theme_id'])->delete();
 		});
 	}
 }

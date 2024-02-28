@@ -15,7 +15,7 @@ class SubTheme extends Model
 
 	protected $table = 'sub_theme';
 	protected $fillable = [
-		'themes_id',
+		'theme_id',
 		'description',
 		'created_by',
 		'updated_by',

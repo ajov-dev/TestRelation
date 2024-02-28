@@ -38,8 +38,8 @@ class ModuleService
 			$req['module_id'] = $Module->id;
 			$GroupModule = GroupModule::updateOrCreate(['group_id' => $req['group_id'], 'module_id' => $Module->id], $req);
 
-			$req['modules_id'] = $GroupModule->id;
-			ModuleInstructor::updateOrCreate(['modules_id' => $req['modules_id']], $req);
+			$req['module_id'] = $GroupModule->id;
+			ModuleInstructor::updateOrCreate(['module_id' => $req['module_id']], $req);
 
 			if (isset($req['themes'])) {
 				$req['whereNotIn'] = collect($req['themes'])->pluck('id');
@@ -47,7 +47,7 @@ class ModuleService
 				// foreach ($req['themes'] as $data) {
 				// 	$data['created_by'] = $req['created_by'];
 				// 	$data['updated_by'] = $req['updated_by'];
-				// 	$data['modules_id'] = $req['modules_id'];
+				// 	$data['module_id'] = $req['module_id'];
 				// 	$this->ServiceTheme->updateOrCreateThemes($data);
 				// }
 			}else{
