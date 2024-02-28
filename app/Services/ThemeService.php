@@ -68,11 +68,11 @@ class ThemeService
 			? ModuleTheme::where('module_id', $data['module_id'])->whereNotIn('theme_id', $data['whereNotIn'])->get()
 			: ModuleTheme::where('module_id', $data['module_id'])->get();
 
-			// $ModuleThemes->each(function ($ModuleTheme) {
-			// 	SubTheme::destroy('theme_id', $ModuleTheme->id);
-			// 	ModuleTheme::destroy($ModuleTheme->id);
-			// });
-			return dd($data);
+			$ModuleThemes->each(function ($ModuleTheme) {
+				SubTheme::destroy('theme_id', $ModuleTheme->id);
+				ModuleTheme::destroy($ModuleTheme->id);
+			});
+			return $ModuleThemes;
 		});
 	}
 }

@@ -33,16 +33,27 @@ class GroupService
 		return GroupResource::collection($response);
 		// return $response;
 	}
-	public function store(array $data): void
+	public function store(array $req): void
 	{
-		DB::transaction(function () use ($data) {
-			$group = Group::find($data['id']);
-			$this->ModuleService->destroyModules($data);
-			foreach ($data['data'] as $ModuleData) {
-				$ModuleData['group_id'] = $group['id'];
-				$ModuleData['created_by'] = 'admin';
-				$ModuleData['updated_by'] = 'admin';
-				$this->ModuleService->updateOrCreateModules($ModuleData);
+		DB::transaction(function () use ($req) {
+			$group = Group::find($req['id']);
+
+			if (isset($req['units'])){
+
+				$req['whereNotIn'] = collect($req['themes'])->pluck('id');
+
+				$this->ModuleService->destroyModules($req);
+
+				foreach ($req['units'] as $ModuleData) {
+
+					$ModuleData['group_id'] = $group['id'];
+
+					$ModuleData['created_by'] = 'admin';
+
+					$ModuleData['updated_by'] = 'admin';
+
+					$this->ModuleService->updateOrCreateModules($ModuleData);
+				}
 			}
 		});
 	}

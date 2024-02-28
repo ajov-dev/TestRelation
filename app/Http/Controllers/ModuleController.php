@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ModuleResource;
+use App\Http\Requests\StoreModuleRequest;
 use App\Models\Module;
-use App\Models\Group;
 use App\Services\ModuleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ModuleController extends Controller
 {
@@ -24,19 +24,11 @@ class ModuleController extends Controller
 		return $this->ModuleService->index();
 	}
 
-	public function store(Request $request)
+	public function store(StoreModuleRequest $req)
 	{
-		$units = $request->input('units');
 
-		foreach ($units as $unit) {
-			$unit['created_by'] = 'admin';
-			$unit['updated_by'] = 'admin';
-			$unit['group_id'] = $request->input('group_id');
-			$this->ModuleService->updateOrCreateModules($unit);
-		}
+		$req['whereNotIn'] = collect($req->units)->pluck('id');
 
-		$response = Module::with(['instructors', 'themes'])->get();
-		return ModuleResource::collection($response);
-		// return ModuleResource::collection
+		return $this->ModuleService->destroyModules($req);
 	}
 }
