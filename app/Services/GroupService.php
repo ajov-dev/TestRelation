@@ -44,16 +44,16 @@ class GroupService
 
 				$this->ModuleService->destroyModules($req);
 
-				foreach ($req['units'] as $ModuleData) {
+				// foreach ($req['units'] as $ModuleData) {
 
-					$ModuleData['group_id'] = $group['id'];
+				// 	$ModuleData['group_id'] = $group['id'];
 
-					$ModuleData['created_by'] = 'admin';
+				// 	$ModuleData['created_by'] = 'admin';
 
-					$ModuleData['updated_by'] = 'admin';
+				// 	$ModuleData['updated_by'] = 'admin';
 
-					$this->ModuleService->updateOrCreateModules($ModuleData);
-				}
+				// 	$this->ModuleService->updateOrCreateModules($ModuleData);
+				// }
 			}
 		});
 	}
